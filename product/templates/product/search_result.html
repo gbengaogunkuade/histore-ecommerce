@@ -1,0 +1,86 @@
+
+
+  {% extends 'product/base.html' %}
+
+  {% load static %}
+
+  <!-- for loading "django.contrib.humanize" responsible for adding human touch to templates -->
+  {% load humanize %}
+
+  {% block content %}
+
+
+
+
+
+<!-- ITEM DISPLAY LOGIC -->
+
+
+<div class="row">
+
+    <!-- if search result exists -->
+    {% if objects %}         
+
+        <h1 class="mt-5"><b>{{ num_of_objects }}</b> Product{{ num_of_objects|pluralize }} found!</h1>
+
+        <!-- search result -->
+        <div class="row my-4">
+            {% for object in objects %}
+              <div class="col-md-3 p-2 mb-4" style="text-align:center;">
+                  <div class="specialcard pt-3">
+                      {% if object.category == 'Computer and Electronics' %}
+                      <a style="width:90%;" class="btn btn-danger py-1" href="{% url 'product:computer_electronics' %}"><b>{{ object.category }}</b></a>
+                      {% elif object.category == 'Phones and Tablets' %}
+                      <a style="width:90%;" class="btn btn-info py-1" href="{% url 'product:phones_tablets' %}"><b>{{ object.category }}</b></a>
+                      {% elif object.category == 'Fashions and Styles' %}
+                      <a style="width:90%;" class="btn btn-warning py-1" href="{% url 'product:fashions_styles' %}"><b>{{ object.category }}</b></a>
+                      {% elif object.category == 'Home and Kitchen' %}
+                      <a style="width:90%;" class="btn btn-primary py-1" href="{% url 'product:home_kitchen' %}"><b>{{ object.category }}</b></a>
+                      {% elif object.category == 'Drinks and Wine' %}
+                      <a style="width:90%;" class="btn btn-secondary py-1" href="{% url 'product:drinks_wine' %}"><b>{{ object.category }}</b></a>
+                      {% elif object.category == 'Kids and Toys' %}
+                      <a style="width:90%;" class="btn btn-success py-1" href="{% url 'product:kids_toys' %}"><b>{{ object.category }}</b></a>
+                      {% elif object.category == 'Others' %}
+                      <a style="width:90%;" class="btn btn-dark py-1" href="{% url 'product:others' %}"><b>{{ object.category }}</b></a>
+                      {% endif %}
+            
+                      <a href="{% url 'product:detail' object.slug %}">
+                      <img class="mt-4" src="{{ object.photo}}" alt="..." style="width:80%; margin:0 auto 0 auto;">
+                      <h5 class="p-2">{{ object.title }}</h5>
+                      </a>
+            
+                      <div style="height:100px;">
+                        {% if object.discount %}
+                          <span style="color:rgb(168, 167, 167);"><del>₦{{ object.price|intcomma }}</del></span>
+                          <h5><b>₦{{ object.discount|intcomma }}</b></h5>
+                        {% else %}
+                          <h5><b>₦{{ object.price|intcomma }}</b></h5>
+                        {% endif %}
+              
+                        {% if object.get_amount_saved %}
+                          <span class="badge bg-success px-2"><b><small>saving ₦{{ object.get_amount_saved|intcomma }}</small></b></span> 
+                        {% endif %}
+                        
+                      </div>
+            
+                  </div>
+              </div>
+
+            {% empty %}
+                        
+                NOTHING WAS FOUND...
+
+            {% endfor %}
+        </div>
+
+
+    {% endif %}
+
+
+</div>
+
+
+
+
+{% endblock %}
+

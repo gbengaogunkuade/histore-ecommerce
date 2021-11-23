@@ -1,0 +1,51 @@
+
+{% extends 'product/base.html' %}
+
+{% load static %}
+
+<!-- for loading "django.contrib.humanize" responsible for adding human touch to templates -->
+{% load humanize %}
+
+{% block content %}
+
+
+
+<!-- ITEMS DISPLAY LOGIC -->
+<div class="row my-4" style="height:100%; font-size:19px;">
+
+    <div class="col-md-2">&nbsp;</div>
+
+    <div class="col-md-8" style="background-color:rgb(255, 255, 255);">
+            <h1 style="margin-bottom:20px; font-weight: bold;">SignUp</h1>
+            <form class="form-group row mb-4 g-3" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+        
+                    <div>Username {{ form.username }}</div>
+
+                    <div>First Name {{ form.first_name }}</div>
+
+                    <div>Last Name {{ form.last_name }}</div>
+
+                    <div>Email {{ form.email }}</div>
+
+                    <div>Verify Email {{ form.verify_email }}</div>
+
+                    <div>Password {{ form.password }}</div>
+
+                    <div>Verify Password {{ form.verify_password }}</div>
+
+                    <div class="col-md-6"><button style="width:100%;" class="btn btn-primary mt-3" type="submit">SIGNUP</button></div>
+
+                    <div class="col-md-6 pt-3">Already have an account? <a href="{% url 'login' %}">Login Now</a></div>
+            </form>
+    </div>
+
+    <div class="col-md-2">&nbsp;</div>
+
+    
+</div>
+
+
+<br>
+
+{% endblock %}

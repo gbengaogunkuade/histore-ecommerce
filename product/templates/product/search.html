@@ -1,0 +1,41 @@
+
+{% extends 'product/base.html' %}
+
+{% load static %}
+
+<!-- for loading "django.contrib.humanize" responsible for adding human touch to templates -->
+{% load humanize %}
+
+{% block content %}
+
+
+
+
+
+<!-- ITEM DISPLAY LOGIC -->
+
+
+<div class="row">
+
+      <div class="col-md-12 mt-4 mb-5 py-2">
+
+          <!-- search form -->
+          <form style="width:70%; margin-left:auto; margin-right:auto;" class="d-flex" method="GET" action="{% url 'product:search_result' %}" enctype="multipart/form-data">
+              <!-- {% csrf_token %} -->
+
+              <input style="font-size:18px; border:2px solid rgb(57, 129, 211);" class="form-control me-2" name="lookup_word" type="search" placeholder="Search for products and brands" aria-label="Search">
+
+              <button class="btn btn-primary" type="submit"><i style="font-size:18px; color:#FFFFFF;" class="bi bi-search me-2"></i></button>
+          </form>
+
+      </div>
+
+
+
+</div>
+
+
+
+
+{% endblock %}
+

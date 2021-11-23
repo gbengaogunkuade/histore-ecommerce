@@ -1,0 +1,168 @@
+
+  {% extends 'shop/base.html' %}
+
+  {% load static %}
+
+  {% block content %}
+
+
+
+
+
+  <!-- ALERT FOR MESSAGES -->
+<div class="gbengaMessagefixed">
+
+    {% include 'shop/messages.html' %}
+    
+</div>
+
+
+
+
+
+<!-- ITEMS DISPLAY LOGIC -->
+
+
+<div class="row">
+
+    <div class="mt-5" style="width:60%; margin-left:auto; margin-right:auto;">
+    
+        <h3 style="margin-bottom:20px; font-weight: bold;">Register Form</h3>
+
+
+        <form class="row mb-4" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+    
+        <div class="col-md-12">
+            Username
+            <input class="form-control mb-3" type="ascii" name="username" placeholder="gbenga4real" required>
+        </div>
+
+        <div class="col-md-6">
+            First Name
+            <input class="form-control mb-3" type="text" name="first_name" placeholder="Gbenga" required>
+        </div>
+
+        <div class="col-md-6">
+            Last Name
+            <input class="form-control mb-3" type="text" name="last_name" placeholder="Ogunkuade" required>
+        </div>
+
+        <div class="col-md-6">
+            Email
+            <input class="form-control mb-3" type="email" name="email" placeholder="gbenga4real@yahoo.com" required>
+        </div>
+
+        <div class="col-md-6">
+            Verify Email
+            <input class="form-control mb-3" type="email" name="verify_email" placeholder="gbenga4real@yahoo.com" required>
+        </div>
+
+        <div class="col-md-6">
+            Password
+            <input class="form-control mb-3" type="password" name="password" placeholder="Password" required>
+        </div>
+
+        <div class="col-md-6">
+            Verify Password
+            <input class="form-control mb-3" type="password" name="verify_password" placeholder="Verify Password" required>
+        </div>
+
+        <div class="col-md-6">
+            <button style="width:100%;" class="btn btn-primary mt-3" type="submit">REGISTER</button>
+        </div>
+
+        <div class="col-md-6 pt-3">
+            Already have an account? <a href="{% url 'login' %}">Login Now</a>
+        </div>
+
+
+    
+        </form>
+
+    
+    </div>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <div class="row">
+
+    <div class="mt-5" style="width:60%; margin-left:auto; margin-right:auto;">
+
+
+        <h3 style="margin-bottom:20px; font-weight: bold;">Register Form</h3>
+
+        <form class="row" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+
+            <div class="col-md-12 mb-4">Username {{ form.username }}</div>
+
+            <div></div>
+
+            <div class="col-md-6 mb-4">First Name {{ form.first_name }}</div>
+
+            <div class="col-md-6 mb-4">Last Name {{ form.last_name }}</div>
+
+            <div class="col-md-6 mb-4">Email Address {{ form.email }}</div>
+
+            <div class="col-md-6 mb-4">Verify Email Address {{ form.verify_email }}</div>
+
+            <div class="col-md-6 mb-4">Password {{ form.password }}</div>
+
+            <div class="col-md-6 mb-4">Verify Password {{ form.verify_password }}</div>
+
+            
+            <button style="width:40%; " class="btn btn-primary mt-3" type="submit">REGISTER</button>
+           
+        </form>
+
+    </div>
+
+
+
+</div> -->
+
+
+
+
+
+
+
+
+{% endblock %}

@@ -1,0 +1,116 @@
+
+
+{% extends 'product/base.html' %}
+
+{% load static %}
+
+<!-- for loading "django.contrib.humanize" responsible for adding human touch to templates -->
+{% load humanize %}
+
+{% block content %}
+
+<br>
+
+
+<!-- ITEMS DISPLAY LOGIC -->
+      {% if page_objects %}
+            <div class="row mt-4">
+                  <h1 class="col-md-12">Items Purchased By You So Far!</h1>
+            </div>
+      {% endif %}
+
+
+        {% for object in page_objects %}
+    
+        <div class="row my-4" style="height:100%; font-size:20px; border:1px solid #c8c6c6;">
+
+            <div class="col-md-3 py-3" style="text-align:center;">
+                  <img style="width:70%;" src="{{ object.photo }}">
+            </div>
+
+            <div class="col-md-9 py-3" style="background-color:#fcf4f4c2;">
+            <b>{{ object.title }}</b>
+            <br>
+                  Bought: <span style="color:rgb(18, 49, 150); font-weight:bold;">{{ object.date_bought|naturaltime }}</span>
+                  <div class="">
+                    QUANTITY: <b>{{ object.quantity }}</b>
+                  </div>
+
+
+                <div class="mt-2">
+                        {% if object.discount %}
+                        <div class="">PRICE: <b>₦{{ object.discount|intcomma }}</b>
+                        <span class="ms-2" style="color:rgb(157, 156, 158);">
+                              <del>₦{{ object.price|intcomma }}</del>
+                        </span>
+                        </div>
+                        {% else %}
+                        <div class="">
+                              PRICE: <b>₦{{ object.price|intcomma }}</b>
+                        </div>
+                        {% endif %}
+                </div>
+
+                <div class="mt-2">
+                        SUB-TOTAL: <b>₦{{ object.get_purchased_subtotal|intcomma }}</b>
+                </div>
+
+                  <div class="">
+                        {% if object.delivered %}
+                              <span style="color:brown;"><b>Delivered</b></span>
+                        {% else %}
+                              <span style="color:rgb(7, 136, 18)"><b>In transit</b></span>
+                        {% endif %}
+                  </div>
+
+            </div>
+      </div>
+
+      {% empty %}
+
+            <div class="col-md-12 fw-bold text-center my-5">
+            <span class="fs-2">YOUR PURCHASE HISTORY IS EMPTY, CONTINUE SHOPPING!!!</span>
+            <br>
+            <a class="btn btn-primary my-5 fs-5" href="{% url 'product:home' %}">Continue Shopping</a>
+          </div>
+
+    {% endfor %}
+
+
+        
+       <!-- PAGINATION LOGIC -->
+      <div class="text-center mt-3 mb-3">
+
+            {% if page_objects %}      <!-- IF THIS PAGE IS PAGINATED -->
+      
+                  {% if page_objects.has_previous %}       <!-- IF THIS PAGE HAS PREVIOUS PAGE -->
+                  <a style="background-color: #0974E9; color: #FFFFFF; padding: 3px; text-decoration: none; margin-right:7px;" href="?page=1"><i class="bi bi-chevron-bar-left"></i></a>
+                  <a style="background-color: #0974E9; color: #FFFFFF; padding: 3px; text-decoration: none; margin-right:7px;" href="?page={{ page_objects.previous_page_number }}"><i class="bi bi-caret-left-fill"></i></a>
+                  {% endif %}
+      
+      
+                  {% for num in page_objects.paginator.page_range %}          <!-- LOOP OVER ALL THE PAGE NUMBERS -->
+                  {% if page_objects.number == num %}                     <!-- IF THIS IS THE CURRENT PAGE -->
+                        <a style="background-color: #bd3244; color: #FFFFFF; padding: 3px 9px 3px 9px; text-decoration: none; margin-left:7px; margin-right:7px;" href="?page={{ num }}">{{ num }}</a>
+                  {% elif num > page_objects.number|add:'-3' and num < page_objects.number|add:'3' %} <!-- OTHER PAGES -->
+                        <a style="background-color: #0974E9; color: #FFFFFF; padding: 3px 9px 3px 9px; text-decoration: none;" href="?page={{ num }}">{{ num }}</a>
+                  {% endif %}
+                  {% endfor %}
+      
+      
+                  {% if page_objects.has_next %}                          <!-- IF THIS PAGE HAS NEXT PAGE -->
+                  <a style="background-color: #0974E9; color: #FFFFFF; padding: 3px; text-decoration: none; margin-left:7px;" href="?page={{ page_objects.next_page_number }}"><i class="bi bi-caret-right-fill"></i></a>
+                  <a style="background-color: #0974E9; color: #FFFFFF; padding: 3px; text-decoration: none; margin-left:7px;" href="?page={{ page_objects.paginator.num_pages }}"><i class="bi bi-chevron-bar-right"></i></a>
+                  {% endif %}
+      
+            {% endif %}
+      
+      </div> 
+
+
+      <br><br><br><br>
+
+{% endblock %}
+
+
+

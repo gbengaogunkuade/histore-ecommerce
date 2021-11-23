@@ -1,0 +1,111 @@
+
+  {% extends 'product/base.html' %}
+
+  {% load static %}
+
+  <!-- for loading "django.contrib.humanize" responsible for adding human touch to templates -->
+  {% load humanize %}
+
+  {% block content %}
+
+
+
+
+  <div class="row">
+        <div class="col-md-12 mt-4 mb-1 py-2">
+          <!-- Carousel -->
+           <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+
+                <!-- Indicators/dots -->
+                <div class="carousel-indicators">
+                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="3" aria-label="Slide 4"></button>
+                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="4" aria-label="Slide 5"></button>
+                </div>
+                
+                <!-- The slideshow/carousel -->
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                      <img style="height:380px;" src="{% static 'images/edited_image_5A.png' %}" class="d-block w-100" alt="...">
+                    </div>
+                    <div class="carousel-item">
+                      <img style="height:380px;" src="{% static 'images/edited_image_2AA.png' %}" class="d-block w-100" alt="...">
+                    </div>
+                    <div class="carousel-item">
+                      <img style="height:380px;" src="{% static 'images/edited_image_1AA.png' %}" class="d-block w-100" alt="...">
+                    </div>
+                    <div class="carousel-item">
+                      <img style="height:380px;" src="{% static 'images/edited_image_4A.png' %}" class="d-block w-100" alt="...">
+                    </div>
+                    <div class="carousel-item">
+                      <img style="height:380px;" src="{% static 'images/edited_image_3A.png' %}" class="d-block w-100" alt="...">
+                    </div>
+                </div>
+                
+                <!-- Left and right controls/icons -->
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+
+      </div>
+  </div>
+
+
+
+
+
+<!-- ITEMS DISPLAY LOGIC -->
+<div class="row my-4">
+  {% for object in objects %}
+    <div class="col-md-3 p-2 mb-4" style="text-align:center;">
+        <div class="specialcard pt-3">
+            {% if object.category == 'Computer and Electronics' %}
+            <a style="width:90%;" class="btn btn-danger py-1" href="{% url 'product:computer_electronics' %}"><b>{{ object.category }}</b></a>
+            {% elif object.category == 'Phones and Tablets' %}
+            <a style="width:90%;" class="btn btn-info py-1" href="{% url 'product:phones_tablets' %}"><b>{{ object.category }}</b></a>
+            {% elif object.category == 'Fashions and Styles' %}
+            <a style="width:90%;" class="btn btn-warning py-1" href="{% url 'product:fashions_styles' %}"><b>{{ object.category }}</b></a>
+            {% elif object.category == 'Home and Kitchen' %}
+            <a style="width:90%;" class="btn btn-primary py-1" href="{% url 'product:home_kitchen' %}"><b>{{ object.category }}</b></a>
+            {% elif object.category == 'Drinks and Wine' %}
+            <a style="width:90%;" class="btn btn-secondary py-1" href="{% url 'product:drinks_wine' %}"><b>{{ object.category }}</b></a>
+            {% elif object.category == 'Kids and Toys' %}
+            <a style="width:90%;" class="btn btn-success py-1" href="{% url 'product:kids_toys' %}"><b>{{ object.category }}</b></a>
+            {% elif object.category == 'Others' %}
+            <a style="width:90%;" class="btn btn-dark py-1" href="{% url 'product:others' %}"><b>{{ object.category }}</b></a>
+            {% endif %}
+  
+            <a href="{% url 'product:detail' object.slug %}">
+            <img class="mt-4" src="{{ object.photo}}" alt="..." style="width:80%; margin:0 auto 0 auto;">
+            <h5 class="p-2">{{ object.title }}</h5>
+            </a>
+  
+            <div style="height:100px;">
+              {% if object.discount %}
+                <span style="color:rgb(168, 167, 167);"><del>₦{{ object.price|intcomma }}</del></span>
+                <h5><b>₦{{ object.discount|intcomma }}</b></h5>
+              {% else %}
+                <h5><b>₦{{ object.price|intcomma }}</b></h5>
+              {% endif %}
+    
+              {% if object.get_amount_saved %}
+                <span class="badge bg-success px-2"><b><small>saving ₦{{ object.get_amount_saved|intcomma }}</small></b></span> 
+              {% endif %}
+            </div>
+  
+        </div>
+    </div>
+  {% endfor %}
+  </div>
+
+
+{% endblock %}

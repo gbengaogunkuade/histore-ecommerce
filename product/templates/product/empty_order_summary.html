@@ -1,0 +1,28 @@
+
+  {% extends 'product/base.html' %}
+
+  {% load static %}
+
+  <!-- for loading "django.contrib.humanize" responsible for adding human touch to templates -->
+  {% load humanize %}
+
+  <!-- for loading cart items count -->
+  {% load cart_template_tags %}
+
+
+
+  {% block content %}
+
+
+  <!-- ITEMS DISPLAY LOGIC -->
+   
+  <div class="row py-2 mt-5" style="background-color:rgb(255, 255, 255);">
+            <div class="col-md-12 fw-bold text-center my-5">
+              <span class="fs-2">YOUR CART IS EMPTY, CONTINUE SHOPPING!!!</span>
+              <br>
+              <a class="btn btn-primary my-5 fs-5" href="{% url 'product:home' %}">Continue Shopping</a>
+            </div>
+  </div>
+
+
+{% endblock %}

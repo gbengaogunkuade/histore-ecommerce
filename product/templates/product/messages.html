@@ -1,0 +1,108 @@
+
+<!-- making Messages disappear after specified seconds -->
+<div id="message_disappear_container">
+    
+        <!-- CUSTOMIZED ALERT FOR MESSAGES -->
+        {% if messages %}
+
+                {% for message in messages %}
+
+                        {% if message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+
+                            <div class="container-fluid p-0">
+                                <div style="text-align:center; font-size:18px;" class="alert {{ message.tags }} alert-dismissible fade show" role="alert">
+
+                                    <div style="font-size:18px;" class="group">
+                                        <i class="bi bi-info-lg me-2"></i> {{ message }}
+                                    </div>
+
+                                    <button type="button" class="btn-close py-4" data-bs-dismiss="alert" aria-label="Close"></button>
+
+                                </div>
+                            </div>
+
+                        {% elif message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+
+                            <div class="container-fluid p-0">
+                                <div style="text-align:center; font-size:18px;" class="alert {{ message.tags }} alert-dismissible fade show" role="alert">
+
+                                    <div style="font-size:18px;" class="group">
+                                        <i class="bi bi-exclamation-lg me-2"></i> {{ message }}
+                                    </div>
+
+                                    <button type="button" class="btn-close py-4" data-bs-dismiss="alert" aria-label="Close"></button>
+
+                                </div>
+                            </div>
+
+                            
+                        {% elif message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+
+                            <div class="container-fluid p-0">
+                                <div style="text-align:center; font-size:18px;" class="alert {{ message.tags }} alert-dismissible fade show" role="alert">
+
+                                <div style="font-size:18px;" class="group">
+                                    <i class="bi bi-check-lg me-2"></i> {{ message }}
+                                </div>
+
+                                <button type="button" class="btn-close py-4" data-bs-dismiss="alert" aria-label="Close"></button>
+
+                                </div>
+                            </div>
+
+
+
+                        {% elif message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}
+
+                            <div class="container-fluid p-0">
+                                <div style="text-align:center; font-size:18px;" class="alert {{ message.tags }} alert-dismissible fade show" role="alert">
+
+                                    <div style="font-size:18px;" class="group">
+                                        <i class="bi bi-exclamation-lg me-2"></i> {{ message }}
+                                    </div>
+
+                                    <button type="button" class="btn-close py-4" data-bs-dismiss="alert" aria-label="Close"></button>
+
+                                </div>
+                            </div>
+
+
+                        
+                        {% elif message.level == DEFAULT_MESSAGE_LEVELS.DEBUG %}
+
+                            <div class="container-fluid p-0">
+                                <div style="text-align:center; font-size:18px;" class="alert {{ message.tags }} alert-dismissible fade show" role="alert">
+
+                                    <div style="font-size:18px;" class="group">
+                                        <i class="bi bi-tools me-2"></i> {{ message }}
+                                    </div>
+
+                                    <button type="button" class="btn-close py-4" data-bs-dismiss="alert" aria-label="Close"></button>
+
+                                </div>
+                            </div>
+
+
+                        {% else %}
+
+                            <div class="container-fluid p-0">
+                            <div style="text-align:center; font-size:18px;" class="alert {{ message.tags }} alert-dismissible fade show" role="alert">
+
+                                <div style="font-size:18px;" class="group">
+                                    <i class="bi bi-check-circle-fill me-2"></i> {{ message }}
+                                </div>
+
+                                <button type="button" class="btn-close py-4" data-bs-dismiss="alert" aria-label="Close"></button>
+
+                            </div>
+                        </div>
+                        
+
+                        {% endif %}
+        
+                {% endfor %}
+
+
+        {% endif %}
+
+</div>

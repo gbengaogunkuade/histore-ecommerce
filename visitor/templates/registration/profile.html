@@ -1,0 +1,108 @@
+
+{% extends 'product/base.html' %}
+
+{% load static %}
+
+<!-- for loading "django.contrib.humanize" responsible for adding human touch to templates -->
+{% load humanize %}
+
+{% block content %}
+
+<br>
+
+<!-- ITEMS DISPLAY LOGIC -->
+
+
+<div class="row my-4" style="height:100%; font-size:19px;">
+
+    <div class="col-md-2">&nbsp;</div>
+
+    <div class="col-md-8" style="background-color:rgb(255, 255, 255);">
+        <h1 style="margin-bottom:20px; font-weight: bold;">Edit Your Profile</h1>
+
+        <form class="form-group row mb-4 g-3" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+                <!-- REGISTERFORM -->
+
+                <div class="col-md-12">Current Username: <b>{{ user.username }}</b></div>
+    
+                <div class="col-md-12">New Username {{ register_form.new_username }}</div>
+
+                <div class="col-md-12">First Name {{ register_form.first_name }}</div>
+
+                <div class="col-md-12">Last Name {{ register_form.last_name }}</div>
+
+                <div class="col-md-12">Email {{ register_form.email }}</div>
+
+                <!-- DELIVERYADDRESS FORM -->
+
+                <div class="col-md-12">Address1 {{ delivery_form.address1 }}</div>
+
+                <div class="col-md-12">Address2 {{ delivery_form.address2 }}</div>
+
+                <div class="col-md-6">Country {{ delivery_form.country }}</div>
+
+                <div class="col-md-6">Zip {{ delivery_form.zip }}</div>
+
+                <div class="col-md-12">Telephone {{ delivery_form.telephone }}</div>
+
+                <div class="col-md-12 mt-4">
+                    You need to proof that you are human to update your profile, <br>supply the right answer to the Arithmetic below: 
+                </div>
+
+
+                <!-- LOGIC QUESTION -->
+                <div class="col-md-4">
+                    <span class="badge bg-danger" style="font-weight:bold; font-size:18px;">
+                        {{ first_Number }}
+                    </span> 
+                    <span style="font-weight:bold; font-size:18px; margin-left:25px;">
+                        <i class="bi bi-plus-lg"></i>
+                    </span> 
+                    <span class="badge bg-danger" style="font-weight:bold; font-size:18px; margin-left:25px;">
+                        {{ second_Number }}
+                    </span>
+                    <span style="font-weight:bold; font-size:20px; margin-left:25px;">=</span>
+                </div>
+
+
+                <!-- USER ANSWER -->
+                <div class="col-md-4">
+                    <input class="form-control" type="number" name="user_answer" placeholder="Answer" required>
+                </div>
+
+                
+                <!-- LOGIC ANSWER (HIDDEN) -->
+                <div class="col-md-4">
+                    <input type="hidden" name="logic_answer" value="{{ logic_answer }}">
+                </div>
+
+
+                <div class="col-md-4 mt-5">
+                    <button style="width:100%;" class="btn btn-secondary" type="reset">CANCEL</button>
+                </div>
+
+                <div class="col-md-4 mt-5">
+                    <button style="width:100%;" class="btn btn-primary" type="submit">UPDATE</button>
+                </div>
+
+                <div class="col-md-4 mt-5">
+                    &nbsp;
+                </div>
+        </form>
+    </div>
+
+
+    <div class="col-md-2">&nbsp;</div>
+
+
+</div>
+
+
+
+
+
+
+
+{% endblock %}

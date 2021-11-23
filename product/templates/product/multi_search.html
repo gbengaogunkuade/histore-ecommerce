@@ -1,0 +1,248 @@
+
+
+  {% extends 'product/base.html' %}
+
+  {% load static %}
+
+  <!-- for loading "django.contrib.humanize" responsible for adding human touch to templates -->
+  {% load humanize %}
+
+  {% block content %}
+
+
+
+
+
+<!-- ITEM DISPLAY LOGIC -->
+
+
+<div class="row">
+
+    <!-- IF THERE IS SEARCH RESULT -->
+    {% if objects %}         
+
+        
+        <div class="col-md-12 mt-4 mb-5 py-2">
+
+            <!-- messages alert -->
+                {% if messages %}
+                    <div style="width:70%; margin-left:auto; margin-right:auto;">
+                        {% include 'product/messages.html' %}
+                    </div>
+                {% endif %}
+
+            <!-- search form -->
+            <form style="width:70%; margin-left:auto; margin-right:auto;" class="d-flex" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <input style="font-size:18px; border:2px solid rgb(57, 129, 211);" class="form-control me-2" name="lookup_word" type="search" placeholder="Search for products and brands" aria-label="Search">
+
+                <button class="btn btn-primary" type="submit"><i style="font-size:18px; color:#FFFFFF;" class="bi bi-search me-2"></i></button>
+            </form>
+
+        </div>
+
+
+
+        <h3><b>{{ num_of_objects }}</b> Product{{ num_of_objects|pluralize }} found!</h3>
+
+
+        <!-- search result -->
+        {% for object in objects %}
+
+            <div class="card mb-4" style="width:15rem; padding-top:15px; text-align:center;">
+
+                <img style="width:150px; margin-left:auto; margin-right:auto;" src="{{ object.photo}}" class="card-img-top" alt="...">
+          
+                <div style="font-size:14px;" class="card-body">
+                    <a href="{% url 'product:detail' object.slug %}">
+                        <h5 class="card-title">{{ object.title }}</h5>
+                    </a>
+          
+                    {% if object.discount %}
+                        <span class="card-title me-2" style="color:rgb(168, 167, 167);"><del>₦{{ object.price|intcomma }}</del></span>
+                        <span class="card-title">₦{{ object.discount|intcomma }}</span>
+                      {% else %}
+                        <span class="card-title">₦{{ object.price|intcomma }}</span>
+                    {% endif %}
+          
+                    {% if object.get_amount_saved %}
+                      <span class="card-title badge bg-danger">saving ₦{{ object.get_amount_saved|intcomma }}</span> 
+                    {% endif %}  
+                </div>
+          
+            </div>
+
+
+        {% empty %}
+            
+            DEAR SIR, NOTHING WAS FOUND.....RESULT BY 'EMPTY TAG'
+
+        {% endfor %}
+
+
+
+    <!-- IF THERE IS NO SEARCH RESULT -->
+    {% else %}
+
+        <div class="row mt-5">
+
+            <!-- search form -->
+                <div class="col-md-4 p-3" style="background-color: white;">
+                    <form style="font-size:20px;" class="form-group g-3" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        
+                        <div>
+                            <h3>CONDITION 1</h3>
+                            <input style="font-size:20px;" class="form-control" list="datalistOptions" id="exampleDataList" placeholder="Type to search..." name="lookup_word">
+                            <datalist id="datalistOptions">
+                                <option value="San Francisco">
+                                <option value="New York">
+                                <option value="Seattle">
+                                <option value="Los Angeles">
+                                <option value="Chicago">
+                            </datalist>
+                        </div>
+                        
+
+                        <br>
+
+                        <div>
+                            <h3>CONDITION 2</h3>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="flexRadioDefault">
+                                <label class="form-check-label" for="flexRadioDefault1">
+                                radio 1
+                                </label>
+                            </div>
+
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="flexRadioDefault" checked>
+                                <label class="form-check-label" for="flexRadioDefault2">
+                                    radio 2
+                                </label>
+                            </div>
+
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="flexRadioDefault" checked>
+                                <label class="form-check-label" for="flexRadioDefault2">
+                                    radio 3
+                                </label>
+                            </div>
+
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="flexRadioDefault" checked>
+                                <label class="form-check-label" for="flexRadioDefault2">
+                                    radio 4
+                                </label>
+                            </div>
+
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="flexRadioDefault" checked>
+                                <label class="form-check-label" for="flexRadioDefault2">
+                                    radio 5
+                                </label>
+                            </div>
+                        </div>
+
+                        <br>
+
+
+                        <div>
+                            <h3>CONDITION 3</h3>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="flexRadioDefault">
+                                <label class="form-check-label" for="flexRadioDefault1">
+                                radio 1
+                                </label>
+                            </div>
+
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="flexRadioDefault" checked>
+                                <label class="form-check-label" for="flexRadioDefault2">
+                                    radio 2
+                                </label>
+                            </div>
+
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="flexRadioDefault" checked>
+                                <label class="form-check-label" for="flexRadioDefault2">
+                                    radio 3
+                                </label>
+                            </div>
+
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="flexRadioDefault" checked>
+                                <label class="form-check-label" for="flexRadioDefault2">
+                                    radio 4
+                                </label>
+                            </div>
+
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="flexRadioDefault" checked>
+                                <label class="form-check-label" for="flexRadioDefault2">
+                                    radio 5
+                                </label>
+                            </div>
+                        </div>
+
+                        <br>
+
+
+                        <div>
+                            <h3>CONDITION 4</h3>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                <label class="form-check-label" for="flexCheckDefault">
+                                  box 1
+                                </label>
+                            </div>
+
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+                                <label class="form-check-label" for="flexCheckChecked">
+                                  box 2
+                                </label>
+                            </div>
+                        </div>
+
+                        <br>
+
+                        <div>
+                            <h3>CONDITION 5</h3>
+                            <input style="font-size:20px;" class="form-control" list="datalistOptions" id="exampleDataList" placeholder="Type to search..." name="lookup_word">
+                            <datalist id="datalistOptions">
+                                <option value="San Francisco">
+                                <option value="New York">
+                                <option value="Seattle">
+                                <option value="Los Angeles">
+                                <option value="Chicago">
+                            </datalist>
+                        </div>
+
+                            <br>
+        
+                        <button style="width:100%;" class="btn btn-primary" type="submit"><i style="font-size:18px; color:#FFFFFF;" class="bi bi-search me-2"></i></button>
+                    </form>
+                </div>
+
+
+
+                <div class="col-md-8" style="border:2px solid rgb(255, 255, 255);">
+                    RESULT APPEARS HERE............
+                </div>
+
+
+        </div>
+
+
+        {% endif %}
+
+</div>
+
+
+
+
+{% endblock %}
+

@@ -1,0 +1,89 @@
+
+  {% extends 'product/base.html' %}
+
+  {% load static %}
+
+  <!-- for loading "django.contrib.humanize" responsible for adding human touch to templates -->
+  {% load humanize %}
+
+  {% block content %}
+
+
+
+
+  <div class="row mt-2">
+        <div class="col-md-12 mt-4 mb-1 py-2">
+
+          <!-- messages alert -->
+          {% if messages %}
+              <div style="width:90%; margin-left:auto; margin-right:auto;">
+                  {% include 'product/messages.html' %}
+              </div>
+          {% endif %}
+
+          <!-- search form -->
+          <form style="width:90%; margin-left:auto; margin-right:auto;" class="d-flex" method="POST" enctype="multipart/form-data">
+              {% csrf_token %}
+
+              <input style="font-size:18px; border:2px solid rgb(57, 129, 211);" class="form-control me-2" name="lookup_word" type="search" placeholder="Search for products and brands" aria-label="Search">
+
+              <button class="btn btn-primary" type="submit"><i style="font-size:18px; color:#FFFFFF;" class="bi bi-search me-2"></i></button>
+          </form>
+
+      </div>
+  </div>
+
+
+
+
+
+<!-- ITEMS DISPLAY LOGIC -->
+<div class="row mt-4">
+
+  {% for object in objects %}
+    <div class="col-md-2 mb-5 px-1 py-2" style="background-color: rgb(255, 255, 255); text-align:center; border:1px solid  rgb(236, 232, 232);">
+        <!-- <a href="{% url 'product:category' object.category %}"><b>{{ object.category }}</b></a>
+        <br><br> -->
+        {% if object.category == 'Computer and Electronics' %}
+        <a class="btn btn-danger py-0" href="{% url 'product:category' object.category %}"><b>{{ object.category }}</b></a>
+        {% elif object.category == 'Phones and Tablets' %}
+        <a class="btn btn-info py-0" href="{% url 'product:category' object.category %}"><b>{{ object.category }}</b></a>
+        {% elif object.category == 'Fashions and Styles' %}
+        <a class="btn btn-warning py-0" href="{% url 'product:category' object.category %}"><b>{{ object.category }}</b></a>
+        {% elif object.category == 'Home and Kitchen' %}
+        <a class="btn btn-primary py-0" href="{% url 'product:category' object.category %}"><b>{{ object.category }}</b></a>
+        {% elif object.category == 'Drinks and Wine' %}
+        <a class="btn btn-secondary py-0" href="{% url 'product:category' object.category %}"><b>{{ object.category }}</b></a>
+        {% elif object.category == 'Kids and Toys' %}
+        <a class="btn btn-success py-0" href="{% url 'product:category' object.category %}"><b>{{ object.category }}</b></a>
+        {% endif %}
+
+        <br><br>
+        <a href="{% url 'product:detail' object.slug %}">
+          <img src="{{ object.photo}}" class="card-img-top" alt="...">
+          <div class="mt-0" style="width:100%; height:120px;">
+              <h5 class="p-3"><b>{{ object.title }}</b></h5>
+          </div>
+        </a>
+
+
+        <div class="mt-0 bg-light py-2" style="width:100%; height:120px; color:#000000; font-size:20px;">
+          {% if object.discount %}
+            <span class="me-4" style="color:rgb(168, 167, 167);"><del>₦{{ object.price|intcomma }}</del></span>
+            <h4>₦{{ object.discount|intcomma }}</h4>
+          {% else %}
+            <h4>₦{{ object.price|intcomma }}</h4>
+          {% endif %}
+
+          {% if object.get_amount_saved %}
+            <span class="badge bg-success px-2"><b><small>saving ₦{{ object.get_amount_saved|intcomma }}</small></b></span> 
+          {% endif %} 
+      </div>
+
+    </div>
+  {% endfor %}
+ 
+</div>
+
+
+{% endblock %}

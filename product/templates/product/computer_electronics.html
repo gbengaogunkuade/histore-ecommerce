@@ -1,0 +1,84 @@
+
+
+  {% extends 'product/base.html' %}
+
+  {% load static %}
+
+  <!-- for loading "django.contrib.humanize" responsible for adding human touch to templates -->
+  {% load humanize %}
+
+  {% block content %}
+
+
+
+<!-- ITEMS DISPLAY LOGIC -->
+<div class="row mt-3">
+  <h3>Computer and Electronics</h3> 
+
+  {% for object in page_objects %}
+    <div class="col-md-3 p-2" style="text-align:center;">
+        <div class="specialcard">
+              
+            <a href="{% url 'product:detail' object.slug %}">
+            <img class="mt-4" src="{{ object.photo}}" alt="..." style="width:80%; margin:0 auto 0 auto;">
+            <h5 class="p-2">{{ object.title }}</h5>
+            </a>
+  
+            <div style="height:100px;">
+              {% if object.discount %}
+                <span style="color:rgb(168, 167, 167);"><del>₦{{ object.price|intcomma }}</del></span>
+                <h5><b>₦{{ object.discount|intcomma }}</b></h5>
+              {% else %}
+                <h5><b>₦{{ object.price|intcomma }}</b></h5>
+              {% endif %}
+    
+              {% if object.get_amount_saved %}
+                <span class="badge bg-success px-2"><b><small>saving ₦{{ object.get_amount_saved|intcomma }}</small></b></span> 
+              {% endif %} 
+            </div>
+  
+        </div>
+    </div>
+  {% endfor %}
+  </div>
+
+
+
+  <br>
+
+
+
+<!-- PAGINATION LOGIC -->
+<div class="text-center mt-3 mb-3">
+
+    {% if page_objects %}      <!-- IF THIS PAGE IS PAGINATED -->
+
+          {% if page_objects.has_previous %}       <!-- IF THIS PAGE HAS PREVIOUS PAGE -->
+              <a style="background-color: #0974E9; color: #FFFFFF; padding: 3px; text-decoration: none; margin-right:7px;" href="?page=1"><i class="bi bi-chevron-bar-left"></i></a>
+              <a style="background-color: #0974E9; color: #FFFFFF; padding: 3px; text-decoration: none; margin-right:7px;" href="?page={{ page_objects.previous_page_number }}"><i class="bi bi-caret-left-fill"></i></a>
+          {% endif %}
+
+
+          {% for num in page_objects.paginator.page_range %}          <!-- LOOP OVER ALL THE PAGE NUMBERS -->
+              {% if page_objects.number == num %}                     <!-- IF THIS IS THE CURRENT PAGE -->
+                  <a style="background-color: #bd3244; color: #FFFFFF; padding: 3px 9px 3px 9px; text-decoration: none; margin-left:7px; margin-right:7px;" href="?page={{ num }}">{{ num }}</a>
+              {% elif num > page_objects.number|add:'-3' and num < page_objects.number|add:'3' %} <!-- OTHER PAGES -->
+                  <a style="background-color: #0974E9; color: #FFFFFF; padding: 3px 9px 3px 9px; text-decoration: none;" href="?page={{ num }}">{{ num }}</a>
+              {% endif %}
+          {% endfor %}
+
+
+          {% if page_objects.has_next %}                          <!-- IF THIS PAGE HAS NEXT PAGE -->
+              <a style="background-color: #0974E9; color: #FFFFFF; padding: 3px; text-decoration: none; margin-left:7px;" href="?page={{ page_objects.next_page_number }}"><i class="bi bi-caret-right-fill"></i></a>
+              <a style="background-color: #0974E9; color: #FFFFFF; padding: 3px; text-decoration: none; margin-left:7px;" href="?page={{ page_objects.paginator.num_pages }}"><i class="bi bi-chevron-bar-right"></i></a>
+          {% endif %}
+
+    {% endif %}
+
+</div>
+
+
+<br>
+
+
+{% endblock %}

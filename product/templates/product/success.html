@@ -1,0 +1,47 @@
+
+{% extends 'product/base.html' %}
+
+{% load static %}
+
+<!-- for loading "django.contrib.humanize" responsible for adding human touch to templates -->
+{% load humanize %}
+
+{% block content %}
+
+
+
+
+<!-- ITEMS DISPLAY LOGIC -->
+<div class="my-5" style="font-family: 'Gudea', sans-serif;">
+          <div class="row">
+
+            <div class="col-md-3">&nbsp;</div>
+
+            <div class="col-md-6">
+              <h1>Thanks for your order!</h1>
+              <span style="font-size:20px;">
+              We appreciate your business!<br>
+              If you have any question, please email
+              <a href="mailto:orders@histore.com">orders@histore.com</a>.
+              </span>
+
+              <div class="col-md-12 my-3">
+                <a style="font-size:22px;" class="btn btn-primary mx-1 mb-2" href="{% url 'product:home' %}">Continue shopping</a>
+              </div>
+
+            </div>
+
+            <div class="col-md-3"></div>
+
+
+          </div>
+
+</div>
+
+    
+<br><br><br><br><br><br><br><br>
+
+
+
+{% endblock %}
+

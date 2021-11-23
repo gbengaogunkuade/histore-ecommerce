@@ -1,0 +1,191 @@
+
+  {% extends 'product/base.html' %}
+
+  {% load static %}
+
+  <!-- for loading "django.contrib.humanize" responsible for adding human touch to templates -->
+  {% load humanize %}
+
+  <!-- for loading cart items count -->
+  {% load cart_template_tags %}
+
+
+
+  {% block content %}
+
+
+  <!-- ITEMS DISPLAY LOGIC -->
+
+    <div class="row mb-2 mt-5">
+
+          <div class="col-md-12 mt-2">
+            {% if user.is_authenticated %}
+              <h5 class="">You have <b>{{ request|user_current_cart_count }} product{{ request|user_current_cart_count|pluralize }}</b> in your cart</h5> 
+            {% else %}
+              <h5 class="">You have <b>{{ request|session_current_cart_count }} product{{ request|session_current_cart_count|pluralize }}</b> in your cart</h5> 
+            {% endif %}
+        </div>
+
+    </div>
+
+
+
+      <!-- <div class="row p-2 mb-2" style="background-color:rgb(255, 255, 255); border-top:2px solid  rgb(236, 232, 232);">
+        <div class="col-md-1 fw-bold">PRODUCT</div>
+        <div class="col-md-5 fw-bold">&nbsp;</div>
+        <div class="col-md-2 fw-bold">QUANTITY</div>
+        <div class="col-md-2 fw-bold">PRICE</div>
+        <div class="col-md-2 fw-bold">SUBTOTAL</div>
+      </div> -->
+
+
+
+      
+      <div class="row py-2" style="background-color:rgb(255, 255, 255); border-top:2px solid  rgb(236, 232, 232);">
+          {% for object in objects %}
+                <div class="col-md-1 py-1">
+                  <a href="{% url 'product:detail' object.product.slug %}">
+                  <img style="width:100%; margin-right:20px;" src="{{ object.product.photo }}">
+                  </a>
+                </div>
+
+                <div class="col-md-5 py-3 ps-4">
+                  <b><a style="color:#000000;" href="{% url 'product:detail' object.product.slug %}">
+                    {{ object.product.title }}</a></b>
+
+                    <div class="mt-2">
+
+                      {% if user.is_authenticated %}
+                            <span class="me-5">
+                              <!-- saving and unsaving this product -->
+                              {% if object.save_this_product %}
+                                  <a href="{% url 'product:unsave_this_product_from_order_summary' object.product.slug %}">
+                                    <i style="color:darkorange; font-size:17px;" class="bi bi-heart-fill"></i>
+                                    <span style="color:darkorange; font-size:20px;">saved</span>
+                                  </a> 
+                              {% else %}
+                                  <a href="{% url 'product:save_this_product_from_order_summary' object.product.slug %}">
+                                    <i style="color:darkorange; font-size:17px;" class="bi bi-heart"></i>
+                                  <span style="color:darkorange; font-size:20px;">save this product</span>
+                                  </a>
+                              {% endif %}
+                            </span>
+ 
+                            <span class="ms-4">
+                            <a href="{% url 'product:remove_items_from_cart' object.product.slug %}">
+                              <i style="color:rgb(172, 9, 9); font-size:18px;" class="bi bi-trash2-fill"></i>
+                              <span style="color:rgb(172, 9, 9); font-size:20px;">remove</span> 
+                            </a>
+                            </span>
+                      {% else %}
+                            <span class="">
+                            <a href="{% url 'product:remove_items_from_cart' object.product.slug %}">
+                              <i style="color:rgb(172, 9, 9); font-size:18px;" class="bi bi-trash2-fill"></i>
+                              <span style="color:rgb(172, 9, 9); font-size:20px;">remove</span> 
+                            </a>
+                            </span>
+                      {% endif %}
+
+
+
+
+                    </div>
+                </div>
+
+                <div class="col-md-2 py-3">
+                    <a href="{% url 'product:remove_single_item_from_cart' object.product.slug %}">
+                      <span class="btn btn-outline-dark btn-sm me-2"><i class="bi bi-dash-lg"></i></span>
+                    </a>
+
+                    <b>{{ object.quantity }}</b>
+
+                    <a href="{% url 'product:add_single_item_to_cart' object.product.slug %}">
+                      <span class="btn btn-outline-dark btn-sm ms-2"><i class="bi bi-plus-lg"></i></span>
+                    </a>
+                </div>
+
+                {% if object.product.discount %}
+                  <div class="col-md-2 py-3">
+                    <b>₦{{ object.product.discount|intcomma }}</b>
+                    <span class="ms-2" style="color:rgb(157, 156, 158);">
+                      <del>₦{{ object.product.price|intcomma }}</del>
+                    </span>
+                      <br>
+                    <span style="color:rgb(29, 158, 68);">saving ₦{{ object.get_amount_saved|intcomma }}</span>
+                  </div>
+                {% else %}
+                  <div class="col-md-2 py-3"><b>₦{{ object.product.price|intcomma }}</b></div>
+                {% endif %}
+
+                <div class="col-md-2 py-3">SUB-TOTAL
+                  <b>₦{{ object.get_subtotal|intcomma }}</b></div>
+
+                <div class="py-1" style="border-top:2px solid  rgb(236, 232, 232);"></div>
+
+          {% empty %}
+
+                <div class="col-md-12 fw-bold text-center my-5">
+                  <span class="fs-2">YOUR CART IS EMPTY, CONTINUE SHOPPING!!!</span>
+                  <br>
+                  <a class="btn btn-primary my-5 fs-5" href="{% url 'product:home' %}">Continue Shopping</a>
+                </div>
+
+          {% endfor %}
+      </div>
+
+      
+
+    {% if cart.get_total %} 
+    <div class="row py-2" style="background-color:rgb(255, 255, 255); text-align:center; border-bottom:2px solid  rgb(236, 232, 232);">
+        <div class="col-md-2 mt-1">
+          <a class="btn btn-info fw-bold py-2" href="{% url 'product:home' %}">Continue Shopping</a>
+        </div>
+
+        <div class="col-md-8 mt-1">
+          <span style="font-size:20px; margin-right:20px;">Total: </span>
+              <span style="font-size:30px;"><b>₦{{ cart.get_total|intcomma }}</b></span>
+              <span style="font-size:18px; color:rgb(155, 146, 146);" class="badge ms-3 py-2">
+              <b>(Delivery fee not included yet)</b>
+            </span>
+        </div>
+
+        <div class="col-md-2 mt-1">
+          <a class="btn btn-warning fw-bold py-2" href="{% url 'product:checkout' %}">Proceed To Checkout</a>
+        </div>
+    </div>
+
+    {% else %}
+        &nbsp;
+    {% endif %}
+
+
+
+
+
+    {% if tempcart.get_total %} 
+    <div class="row py-2" style="background-color:rgb(255, 255, 255); text-align:center;">
+        <div class="col-md-2 mt-1">
+          <a class="btn btn-info fw-bold py-2" href="{% url 'product:home' %}">Continue Shopping</a>
+        </div>
+
+        <div class="col-md-8 mt-1">
+          <span style="font-size:20px; margin-right:20px;">Total: </span>
+              <span style="font-size:30px;"><b>₦{{ tempcart.get_total|intcomma }}</b></span>
+              <span style="font-size:18px; color:rgb(155, 146, 146);" class="badge ms-3 py-2">
+              <b>(Delivery fee not included yet)</b>
+            </span>
+        </div>
+
+        <div class="col-md-2 mt-1">
+          <a class="btn btn-warning fw-bold py-2" href="{% url 'product:checkout' %}">Proceed To Checkout</a>
+        </div>
+    </div>
+
+    {% else %}
+        &nbsp;
+    {% endif %}
+
+    
+    <div class="my-5"></div>
+
+{% endblock %}

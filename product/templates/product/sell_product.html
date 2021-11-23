@@ -1,0 +1,48 @@
+
+  {% extends 'product/base.html' %}
+
+  {% load static %}
+
+  <!-- for loading "django.contrib.humanize" responsible for adding human touch to templates -->
+  {% load humanize %}
+
+  <!-- for loading cart items count -->
+  {% load cart_template_tags %}
+
+
+
+  {% block content %}
+
+  <br>
+
+
+  <!-- ITEMS DISPLAY LOGIC -->
+
+  <div class="row my-4" style="height:100%; font-size:19px;">
+
+    <div class="col-md-2">&nbsp;</div>
+
+    <div class="col-md-8" style="background-color:rgb(255, 255, 255);">
+        <h1 style="margin-bottom:20px; font-weight: bold;">Sell An Item On HISTORE</h1>
+
+        <form class="form-group row g-3" style="font-size:20px;" method="POST" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="col-md-12">Title {{ form.title }}</div>
+          <div class="col-md-6">Price {{ form.price }}</div>
+          <div class="col-md-6">Discount {{ form.discount }}</div>
+          <div class="col-md-6">Category {{ form.category }}</div>
+          <div class="col-md-6">Label {{ form.label }}</div>
+          <div class="col-md-12">Description {{ form.description }}</div>
+          <div>Photo {{ form.photo }}</div>
+          <button style="width:20%;" class="btn btn-primary" type="submit">Post</button>
+        </form>
+    </div>
+
+    <div class="col-md-2">&nbsp;</div>
+
+</div>
+
+<br><br>
+
+
+{% endblock %}

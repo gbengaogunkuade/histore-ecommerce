@@ -1,0 +1,474 @@
+<!doctype html>
+<html lang="en">
+  <head>
+
+<!-- FOR LOADING CART MENU COUNT -->
+{% load cart_template_tags %}
+
+<!-- FOR LOADING STATIC FILES (css, javascript, pdf, docx, static images etc) -->
+{% load static %}
+
+
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+
+
+<!-- BOOTSTRAP ICONS stylesheet -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+
+
+<!-- GOOGLE FONT -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Arima+Madurai:wght@300;400;900&family=Gudea&family=Ma+Shan+Zheng&family=Staatliches&display=swap" rel="stylesheet">
+
+<!-- WEB LOGO IMAGE -->
+<link rel="icon" type="image/png" href="{% static 'images/FreeShopLogo.png' %}">
+
+
+<!-- PAGE TITLE -->
+<!-- NOTE: THE VARIABLE NAME "pageTitle" USED BELOW HAS TO BE DEFINED IN VIEWS.PY -->
+{% if pageTitle %}
+    <title>{{ pageTitle }}</title>
+{% else %}
+    <title>HiStore</title>
+{% endif %}
+
+   
+
+
+
+    <style>
+
+        /* ---------------------  DJANGO MESSAGES STYLING  -------------------------- */
+        
+        .messageFixed {
+          position: fixed;
+          top: 0;
+          right: 0;
+          width: 100%;
+          font-size:22px;
+        }
+
+
+
+        /* ---------------------  DETAILVIEW FORM STYLING  -------------------------- */
+
+        .detailviewform {
+            width: 300px;
+            margin: 0 auto;
+            text-align: center;
+            padding-top:15px;
+            }
+
+        .value-button {
+            display: inline-block;
+            border: 1px solid #ddd;
+            margin: 0px;
+            width: 40px;
+            height: 20px;
+            text-align: center;
+            vertical-align: middle;
+            padding: 11px 0;
+            background: #eee;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        .value-button:hover {
+            cursor: pointer;
+        }
+
+        form #decrease {
+            margin-right: -4px;
+            border-radius: 8px 0 0 8px;
+        }
+
+        form #increase {
+            margin-left: -4px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        form #input-wrap {
+            margin: 0px;
+            padding: 0px;
+        }
+
+        input#number {
+            text-align: center;
+            border: none;
+            /* border-top: 1px solid #ddd;
+            border-bottom: 1px solid #ddd; */
+            padding:0 5px 0 5px;
+            margin: 0px 5px 0 5px;
+            width: 60px;
+            height: 40px;
+            color:rgb(0, 0, 0);
+            font-weight: bold;
+        }
+
+
+        .mybuttons {
+            text-align: center;
+            border: none;
+            border-top: 1px solid #ddd;
+            border-bottom: 1px solid #ddd;
+            margin: 0px;
+            width: 40px;
+            height: 40px;
+            background-color: aqua;
+        }
+
+
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+
+
+        /* ---------------------  LINK STYLING  -------------------------- */
+
+        a:link {
+        text-decoration: none;
+        }
+
+        a:visited {
+        text-decoration: none;
+        }
+
+        a:hover {
+        text-decoration: none;
+        }
+
+        a:active {
+        text-decoration: none;
+        }
+
+
+
+        /* ---------------------  LOGIN ALERT STYLING  -------------------------- */
+
+        .loginFixed {
+        position: fixed;
+        bottom: 0;
+        right: 0;
+        width: 550px;
+        z-index: 0;
+        }
+
+
+
+
+    </style>
+    
+
+
+
+
+  </head>
+
+
+
+
+
+  <body style="background-color: rgb(236, 232, 232);">
+
+
+
+<!-- NAVIGATION MENU -->
+<!-- TOP LEVEL MENU -->
+<!-- IF USER LOGGED IN-->
+
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="font-size: 18px;">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="{% url 'product:home' %}"><h2>HISTORE</h2></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+
+            <ul class="navbar-nav">
+
+                {% if user.is_authenticated %}
+                <li class="nav-item me-4">
+                    <a class="nav-link active" aria-current="page" href="{% url 'profile' %}">{{ user.first_name }}'s Profile</a>
+                </li>
+                {% else %}
+                    &nbsp;
+                {% endif %}
+
+                <li class="nav-item me-4">
+                    <a class="nav-link active" aria-current="page" href="{% url 'product:sell_product' %}">Sell A Product</a>
+                </li>
+
+                <li class="nav-item me-4">
+                    <a class="nav-link active" href="{% url 'product:purchased'%}">Your Purchases</a>
+                </li>
+
+                {% if user.is_authenticated %}
+                    <!-- THE CART -->
+                        <li class="nav-item">
+                            <a href="{% url 'product:order_summary' %}">
+                                <div class="mt-1 me-5">
+                                    <!-- <span style="font-size:18px; color:#FFFFFF;">CART</span> -->
+                                    <span class="badge bg-light px-3 py-1">
+                                        <span style="font-size:18px; color:rgb(10, 10, 10)">CART</span>
+                                        <i style="font-size:22px; color:rgb(8, 8, 8);" class="bi bi-cart"></i>
+                                        <span style="font-size:16px;" class="badge bg-danger">
+                                            {{ request|user_current_cart_count }}
+                                        </span>
+                                    </span>
+                                </div>
+                            </a>
+                        </li>
+
+                {% else %}
+                    <!-- THE CART -->
+                    <li class="nav-item">
+                        <a href="{% url 'product:order_summary' %}">
+                            <div class="mt-1 me-5">
+                                <!-- <span style="font-size:18px; color:#FFFFFF;">CART</span> -->
+                                <span class="badge bg-light px-3 py-1">
+                                    <span style="font-size:18px; color:rgb(10, 10, 10)">CART</span>
+                                    <i style="font-size:22px; color:rgb(8, 8, 8);" class="bi bi-cart"></i>
+                                    <span style="font-size:16px;" class="badge bg-danger">
+                                        {{ request|session_current_cart_count }}
+                                    </span>
+                                </span>
+                            </div>
+                        </a>
+                    </li>
+
+                {% endif %}
+
+
+
+
+                {% if user.is_authenticated %}
+                <!-- SEARCH FORM -->
+                <li class="nav-item">
+                    <form class="d-flex" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        <input style="font-size:18px; border:2px solid rgb(57, 129, 211); width:400px;" class="form-control me-2" name="lookup_word" type="search" placeholder="Search for products and brands" aria-label="Search">
+
+                        <button class="btn btn-primary" type="submit"><i style="font-size:18px; color:#FFFFFF;" class="bi bi-search me-2"></i></button>
+                    </form>
+                </li>
+
+                {% else %}
+                <!-- SEARCH FORM -->
+                <li class="nav-item">
+                    <form class="d-flex" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        <input style="font-size:18px; border:2px solid rgb(57, 129, 211); width:550px;" class="form-control me-2" name="lookup_word" type="search" placeholder="Search for products and brands" aria-label="Search">
+
+                        <button class="btn btn-primary" type="submit"><i style="font-size:18px; color:#FFFFFF;" class="bi bi-search me-2"></i></button>
+                    </form>
+                </li>
+
+                {% endif %}
+
+
+
+
+
+            </ul>
+
+        </div>
+    </div>
+</nav>
+
+
+
+<!-- SECOND LEVEL MENU -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light" style="font-size: 18px;">
+    <div class="container-fluid">
+        <!-- <a class="navbar-brand" href="#">&nbsp;</a> -->
+        <!-- <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button> -->
+        <div class="collapse navbar-collapse" id="navbarNav">
+
+            <ul class="navbar-nav">
+
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="#">Computer and Accessories</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="#">Phones and Tablets</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="#">Fashions and Styles</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="#">Home and Kitchen</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="#">Kids and Toys</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="#">Others</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link active me-3" href="{% url 'product:contact' %}">Contact</a>
+                </li>
+
+                {% if user.is_authenticated %}
+                <!-- LOGOUT MESSAGE -->
+                    <li class="nav-item ms-5">
+                        <a style="font-size: 18px;" class="btn btn-danger px-4 py-1 mt-1 me-2" href="{% url 'logout' %}">
+                            LOGOUT
+                        </a>
+                    </li>
+                {% else %}
+                <!-- LOGIN MESSAGE -->
+                    <li class="nav-item ms-5">
+                        <a style="font-size: 18px;" class="btn btn-danger px-4 py-1 mt-1 me-2" href="{% url 'login' %}">
+                            LOGIN
+                        </a> 
+                    </li>
+                {% endif %}
+
+            </ul>
+
+        </div>
+    </div>
+</nav>
+
+
+
+
+<!-- BLOCK CONTENT -->
+<div style="font-family: 'Gudea', sans-serif; font-size: 18px; padding:10px;" class="fluid-container">
+    <div class="container p-0">
+
+    {% block content %}
+
+    {% endblock %}
+    
+    </div>
+</div>
+
+
+
+<!-- {% if user.is_authenticated %}
+    &nbsp;
+{% else %} -->
+    <!-- PLEASE LOGIN MESSAGE -->
+    <!-- <div class="loginFixed">
+      <a style="font-size: 14px;" class="btn btn-dark" href="#">
+        You are not logged in, please log in to enjoy a wonderful browsing experiene.
+      </a>
+    </div>
+{% endif %} -->
+
+
+
+
+
+<!-- Optional JavaScript; choose one of the two! -->
+
+<!-- Option 1: Bootstrap Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
+
+
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+
+<!-- Option 2: Separate Popper and Bootstrap JS -->
+<!--
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js" integrity="sha384-eMNCOe7tC1doHpGoWe/6oMVemdAVTMs2xqW4mwXrXsW0L84Iytr2wi5v2QjrP/xp" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.min.js" integrity="sha384-cn7l7gDp0eyniUwwAZgrzD06kc/tftFf19TOAs2zVinnD/C7E91j9yyk5//jjpt/" crossorigin="anonymous"></script>
+-->
+   
+
+
+
+
+
+<script>
+
+    // -----------------------------------------------------------------------------------------------
+    // DETAILVIEW FORM
+    // -----------------------------------------------------------------------------------------------
+
+    // INCREASING THE VALUE
+    function increaseValue() {
+    var value = parseInt(document.getElementById('number').value, 10);
+    value = isNaN(value) ? 0 : value;
+    value++;
+    document.getElementById('number').value = value;
+    }
+
+
+    // DECREASING THE VALUE
+    function decreaseValue() {
+    var value = parseInt(document.getElementById('number').value, 10);
+    value = isNaN(value) ? 0 : value;
+    value--;
+    value < 1 ? value = 1 : '1';
+    // value--; DO NOTHING IF value is lesser than 1
+    document.getElementById('number').value = value;
+    }
+
+
+
+    // -----------------------------------------------------------------------------------------------
+    // MESSAGES DISAPPEAR CONTAINER
+    // -----------------------------------------------------------------------------------------------
+    // suppose the `id` attribute of element is `message_disappear_container`.
+    // var message_ele = document.getElementById("message_disappear_container");
+
+    // setTimeout(function(){ 
+    // message_ele.style.display = "none"; 
+    // }, 2000);
+    // Timeout is 3 sec, you can change it
+
+
+
+
+    // -----------------------------------------------------------------------------------------------
+    // MESSAGES DISAPPEAR CONTAINER
+    // -----------------------------------------------------------------------------------------------
+    // suppose the `id` attribute of element is `message_disappear_container`.
+    var message_element = document.getElementById("message_disappear_container");
+
+    setTimeout(function(){ 
+        message_element.style.display = "none"; 
+    }, 3000);
+    // Timeout is 3 sec, you can change it
+
+
+
+</script>
+
+
+
+
+
+</body>
+</html>
+
+

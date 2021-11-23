@@ -1,0 +1,47 @@
+
+  {% extends 'product/base.html' %}
+
+  {% load static %}
+
+  <!-- for loading "django.contrib.humanize" responsible for adding human touch to templates -->
+  {% load humanize %}
+
+  {% block content %}
+
+
+
+
+
+
+<!-- ITEMS DISPLAY LOGIC -->
+
+<div class="row my-4" style="height:100%; font-size:19px;">
+
+        <div class="col-md-3">&nbsp;</div>
+
+        <div class="col-md-6" style="background-color:rgb(255, 255, 255);">
+                <h1 style="margin-bottom:20px; font-weight: bold;">Login</h1>
+                <form class="form-group row g-3" method="POST" >
+                        {% csrf_token %}
+
+                        <div class="col-md-12">Username {{ form.username }}</div>
+
+                        <div class="col-md-12">Password {{ form.password }}</div>
+
+                        <div class="col-md-6"><button class="form-control mb-3 btn btn-primary" type="submit">Login</button></div>
+
+                        <div class="col-md-6"><span style="margin-left: 5px;"><a href="{% url 'password_reset' %}">Forgot Password?</a></span></a></div>
+
+                        <div class="col-md-12">Do You Need An Account On HISTORE? <a href="{% url 'register' %}">Sign Up Now!</a></div>
+                </form>
+        </div>
+
+        <div class="col-md-3">&nbsp;</div>
+
+</div>
+
+<br><br><br><br><br>
+
+
+
+{% endblock %}

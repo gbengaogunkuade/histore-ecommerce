@@ -1,0 +1,880 @@
+<!doctype html>
+<html lang="en">
+  <head>
+
+<!-- FOR LOADING CART MENU COUNT -->
+{% load cart_template_tags %}
+
+<!-- FOR LOADING STATIC FILES (css, javascript, pdf, docx, static images etc) -->
+{% load static %}
+
+
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+
+
+
+
+<!-- PASSWORD SHOW OR HIDE CSS -->
+<!-- Bootstrap CSS -->
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous" /> -->
+<!-- font awesome  -->
+<!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous" /> -->
+
+
+
+
+<!-- BOOTSTRAP ICONS stylesheet -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+
+
+<!-- GOOGLE FONT -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Arima+Madurai:wght@300;400;900&family=Gudea&family=Ma+Shan+Zheng&family=Staatliches&display=swap" rel="stylesheet">
+
+<!-- WEB LOGO IMAGE -->
+<link rel="icon" type="image/png" href="{% static 'images/FreeShopLogo.png' %}">
+
+
+<!-- PAGE TITLE -->
+<!-- NOTE: THE VARIABLE NAME "pageTitle" USED BELOW HAS TO BE DEFINED IN VIEWS.PY -->
+{% if pageTitle %}
+    <title>{{ pageTitle }}</title>
+{% else %}
+    <title>HiStore</title>
+{% endif %}
+
+   
+
+    <!-- --------------------------- STYLING BEGINS -------------------------------- -->
+    <style>
+
+    
+        html, body {
+        height: 100%;
+        height: 100%;
+        margin: 0 auto 0 auto;
+        /* background-color:rgb(248, 245, 245); */
+        }
+
+
+        .full_height {
+        height: 100%;
+        }
+
+
+
+        /* FIXED MENU */
+        .menuFixed {
+          position: fixed;
+          top: 0;
+          right: 0;
+          width: 100%;
+          z-index: 3;
+        }
+
+
+
+        /* STICKY MENU */
+        .menuSticky {
+        position: -webkit-sticky;
+        position: sticky;
+        top: 0;
+        z-index: 2;
+        }
+
+
+        /* ---------------------  SPECIALCARD STYLING  -------------------------- */
+
+        .specialcard {
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.26);
+        /* transition: 0.3s; */
+        width: 100%;
+        height: 100%;
+        background-color: white;
+        }
+        
+        .specialcard:hover {
+        box-shadow: 0 12px 24px 0 rgba(10, 0, 0, 0.671);
+        /* box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2); */
+        }
+
+
+
+
+        /* ---------------------  SPECIALDETAILCARD STYLING  -------------------------- */
+
+      .specialdetailcard {
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.26);
+      /* transition: 0.3s; */
+      width: 100%;
+      height: 100%;
+      background-color: white;
+      }
+      
+      .specialdetailcard:hover {
+      box-shadow: 0 3px 6px 0 rgba(10, 0, 0, 0.397);
+      /* box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2); */
+      }
+
+
+
+
+        /* ---------------------  DJANGO MESSAGES STYLING  -------------------------- */
+        
+        .messageFixed {
+          position: fixed;
+          top: 0;
+          right: 0;
+          width: 100%;
+          font-size:35px;
+          z-index: 4;
+        }
+
+
+
+        /* ---------------------  DETAILVIEW FORM STYLING  -------------------------- */
+
+        .detailviewform {
+            width: 300px;
+            margin: 0 auto;
+            text-align: center;
+            padding-top:15px;
+            }
+
+        .value-button {
+            display: inline-block;
+            border: 1px solid #ddd;
+            margin: 0px;
+            width: 40px;
+            height: 20px;
+            text-align: center;
+            vertical-align: middle;
+            padding: 11px 0;
+            background: #eee;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        .value-button:hover {
+            cursor: pointer;
+        }
+
+        form #decrease {
+            margin-right: -4px;
+            border-radius: 8px 0 0 8px;
+        }
+
+        form #increase {
+            margin-left: -4px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        form #input-wrap {
+            margin: 0px;
+            padding: 0px;
+        }
+
+        input#number {
+            text-align: center;
+            border: none;
+            /* border-top: 1px solid #ddd;
+            border-bottom: 1px solid #ddd; */
+            padding:0 5px 0 5px;
+            margin: 0px 5px 0 5px;
+            width: 60px;
+            height: 40px;
+            color:rgb(0, 0, 0);
+            font-weight: bold;
+        }
+
+
+        .mybuttons {
+            text-align: center;
+            border: none;
+            border-top: 1px solid #ddd;
+            border-bottom: 1px solid #ddd;
+            margin: 0px;
+            width: 40px;
+            height: 40px;
+            background-color: aqua;
+        }
+
+
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+
+
+        /* ---------------------  LINK STYLING  -------------------------- */
+
+        a:link {
+        text-decoration: none;
+        }
+
+        a:visited {
+        text-decoration: none;
+        }
+
+        a:hover {
+        text-decoration: none;
+        }
+
+        a:active {
+        text-decoration: none;
+        }
+
+
+
+        /* ---------------------  LOGIN ALERT STYLING  -------------------------- */
+
+        .loginFixed {
+        position: fixed;
+        bottom: 0;
+        right: 0;
+        width: 550px;
+        z-index: 0;
+        }
+
+
+
+
+        /* --------------------------- FULL SCREEN OVERLAY NAVIGATION STYLING ------------------------------------ */
+
+        .overlay {
+        height: 0%;
+        width: 100%;
+        position: fixed;
+        z-index: 5;
+        top: 0;
+        left: 0;
+        background-color: rgb(0,0,0);
+        background-color: rgba(0, 0, 0, 0.938);
+        overflow-y: hidden;
+        transition: 0.5s;
+        }
+
+        .overlay-content {
+        position: relative;
+        top: 5%;
+        width: 100%;
+        text-align: center;
+        margin-top: 30px;
+        }
+
+        .overlay a {
+        padding: 8px;
+        text-decoration: none;
+        font-size: 26px;
+        color: #818181;
+        display: block;
+        transition: 0.3s;
+        }
+
+        .overlay a:hover, .overlay a:focus {
+        color: #ffffff;
+        }
+
+        .overlay .closebtn {
+        position: absolute;
+        top: 30px;
+        right: 45px;
+        font-size: 50px;
+        z-index:6;
+        }
+
+        @media screen and (max-height: 450px) {
+        .overlay {overflow-y: auto;}
+        .overlay a {font-size: 20px}
+        .overlay .closebtn {
+        font-size: 40px;
+        top: 15px;
+        right: 35px;
+        }
+        }
+
+
+
+        /*------------------------ MODAL BOX STYLING ----------------------------------*/
+
+        /* The Modal (background) */
+        .modal {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 6; /* Sit on top */
+        padding-top: 0px; /* Location of the box */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgba(0, 0, 0, 0.92); /* Fallback color */
+        background-color: rgba(0, 0, 0, 0.92); /* Black w/ opacity */
+        font-size: 22px;
+        }
+
+        /* Modal Content */
+        .modal-content {
+        background-color:rgba(0, 0, 0, 0);
+        opacity: 1;
+        color:#ffffff;
+        margin: auto;
+        padding: 20px;
+        /* border: 1px solid rgb(255, 255, 255); */
+        width: 100%;
+        height: 30%;
+        /* top: 30%; */
+        z-index: 6;
+        }
+
+        /* The Close Button */
+        .close {
+        color: #ffffff;
+        float: right;
+        font-size: 22px;
+        font-weight:bold;
+        }
+
+        .close:hover,
+        .close:focus {
+        /* color: rgb(0, 0, 0); */
+        text-decoration: none;
+        cursor: pointer;
+        }
+
+
+
+    </style>
+    <!-- --------------------------- STYLING ENDS -------------------------------- -->
+
+
+
+  </head>
+
+
+
+
+
+  <body>
+
+
+    <!-- FULL SCREEN OVERLAY NAVIGATION MENU OPTIONS  -->
+
+    <div id="myNav" class="overlay">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <div class="overlay-content">
+          <a href="{% url 'product:home' %}">Home</a>
+          <a href="{% url 'product:computer_electronics' %}">Computer and Electronics</a>           
+          <a href="{% url 'product:phones_tablets' %}">Phones and Tablets</a>
+          <a href="{% url 'product:fashions_styles' %}">Fashions and Styles</a>
+          <a href="{% url 'product:home_kitchen' %}">Home and Kitchen</a>
+          <a href="{% url 'product:drinks_wine' %}">Drinks and Wine</a>
+          <a href="{% url 'product:kids_toys' %}">Kids and Toys</a>
+          <a  href="{% url 'product:others' %}">Other Products</a>
+          <a href="{% url 'product:sell_product' %}">
+            <span style="font-size:24px; border-top:1px solid #ffffff; border-bottom:1px solid #ffffff;" class="py-0">Sell Your Product Here</span>
+        </a>
+        </div>
+    </div>
+
+
+
+
+
+<!-- NAVIGATION MENU -->
+<!-- TOP LEVEL MENU -->
+<!-- IF USER LOGGED IN-->
+<!-- ------------------------------------------------------------------------------------------------------ -->
+{% if user.is_authenticated %}
+    <nav class="menuFixed navbar navbar-expand-lg navbar-dark bg-dark" style="font-size: 18px; color:#FFFFFF;">
+        <div class="container-fluid">
+            <a style="color:#FFFFFF;" class="me-5" href="{% url 'product:home' %}"><h1>HiStore</h1></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+
+                    <!-- product categories -->
+                    <li class="nav-item ps-3">
+                        <span style="font-size:19px; color:#ffffff; font-weight:bold; text-align:left; border:1px solid #fff; width:100%; border-radius:5px;" onclick="openNav()" class="nav-link active btn btn-default px-2 py-2 mt-2 bg-default">Product Categories <i class="bi bi-list ms-1"></i></span>
+                    </li>
+
+                    <!-- user profile and others -->
+                    <li class="nav-item dropdown ps-3">
+                        <a style="font-size: 18px; text-align:left; color:#ffffff; border:1px solid #fff; width:100%; border-radius:5px;" class="nav-link dropdown-toggle nav-link py-2 px-2 mt-2 me-2 bg-default" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <b><i class="bi bi-person-circle"></i> Hi {{ user.first_name|upper }}</b>
+                        </a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                        <li>
+                                            <a style="font-size: 20px;" class="dropdown-item mb-2" aria-current="page" href="{% url 'profile' %}">
+                                                <i style="font-size:20px; color:rgb(24, 58, 211);" class="bi bi-person-circle"></i> My Profile  
+                                            </a>
+                                        </li>
+
+                                        <li>
+                                            <a style="font-size: 20px;" class="dropdown-item mb-2" aria-current="page" href="{% url 'product:purchased'%}">
+                                                <i style="font-size:20px; color:rgb(187, 20, 20);" class="bi bi-bag-fill"></i> My Purchases {{ request|user_purchased_product_count }}
+                                            </a>
+                                        </li>
+
+                                        <li>
+                                            <a style="font-size: 20px;" class="dropdown-item mb-2" aria-current="page" href="{% url 'product:savedproducts' %}">
+                                                <i style="font-size:20px; color:darkorange;" class="bi bi-heart-fill"></i> My Saved Items {{ request|user_saved_product_count }}
+                                            </a>
+                                        </li>
+
+                                        <li>
+                                            <a style="font-size: 20px;" class="dropdown-item mb-2" aria-current="page" href="{% url 'password_change' %}">
+                                                <i style="font-size:20px; color:rgb(13, 144, 112);" class="bi bi-pencil-fill"></i> Change Password
+                                            </a>
+                                        </li>
+                                </ul>
+                    </li>
+
+
+
+                    <!-- the cart -->
+                    <li class="nav-item ps-3">
+                        <a href="{% url 'product:order_summary' %}">
+                            <div style="border:1px solid #fff; width:100%; border-radius:5px;" class="mt-2 px-2 py-1">
+                                <span class="badge bg-default px-0 py-1">
+                                    <span style="font-size:18px; color:rgb(255, 255, 255)">CART</span>
+                                    <i style="font-size:24px; color:rgb(255, 255, 255);" class="bi bi-cart"></i>
+                                    <span style="font-size:16px;" class="badge bg-danger">
+                                        {{ request|user_current_cart_count }}
+                                    </span>
+                                </span>
+                            </div>
+                        </a>
+                    </li>
+
+                    <!-- logout -->
+                    <li class="nav-item ps-3">
+                        <a style="font-size:19px; color:rgb(231, 69, 102); font-weight:bold; text-align:left; border:1px solid rgb(231, 69, 102); width:100%; border-radius:5px;" class="nav-link active btn btn-default px-2 py-2 mt-2 bg-default" href="{% url 'logout' %}">
+                            LOGOUT
+                        </a>
+                    </li>
+
+                    <!-- search box -->
+                    <li class="nav-item ps-3">
+                        <form style="width:100%;"  class="d-flex mt-2" method="GET" action="{% url 'product:search_result' %}" enctype="multipart/form-data">
+                            {% csrf_token %}
+              
+                            <input style="font-size:18px; border:2px solid rgb(57, 129, 211);" class="form-control me-2" name="lookup_word" type="search" placeholder="Search for items here" aria-label="Search">
+              
+                            <button class="btn btn-primary" type="submit"><i style="font-size:18px; color:#FFFFFF;" class="bi bi-search me-2"></i></button>
+                        </form>
+                    </li>
+
+                </ul>
+
+            </div>
+        </div>
+    </nav>
+
+
+
+<!-- ------------------------------------------------------------------------------------------------------ -->
+
+{% else %}
+    <nav class="menuFixed navbar navbar-expand-lg navbar-dark bg-dark" style="font-size: 18px;">
+        <div class="container-fluid">
+                <a style="color:#FFFFFF;" class="me-5" href="{% url 'product:home' %}"><h1>HiStore</h1></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+
+                        <!-- product categories -->
+                        <li class="nav-item ps-3">
+                            <span style="font-size:19px; color:#ffffff; font-weight:bold; text-align:left; border:1px solid #fff; width:100%; border-radius:5px;" onclick="openNav()" class="nav-link active btn btn-default px-2 py-2 mt-2 bg-default">Product Categories <i class="bi bi-list ms-1"></i></span>
+                        </li>
+
+
+                        <!-- the cart -->
+                        <li class="nav-item ps-3">
+                            <a href="{% url 'product:order_summary' %}">
+                                <div style="border:1px solid #fff; width:100%; border-radius:5px;" class="mt-2 px-2 py-1">
+                                    <span class="badge bg-default px-0 py-1">
+                                        <span style="font-size:18px; color:rgb(255, 255, 255)">CART</span>
+                                        <i style="font-size:24px; color:rgb(255, 255, 255);" class="bi bi-cart"></i>
+                                        <span style="font-size:16px;" class="badge bg-danger">
+                                            {{ request|session_current_cart_count }}
+                                        </span>
+                                    </span>
+                                </div>
+                            </a>
+                        </li>
+
+
+                        <!-- login -->
+                        <li class="nav-item ps-3">
+                            <a style="font-size:19px; color:rgb(231, 69, 102); font-weight:bold; text-align:left; border:1px solid rgb(231, 69, 102); width:100%; border-radius:5px;" class="nav-link active btn btn-default px-2 py-2 mt-2 bg-default" href="{% url 'login' %}">
+                                LOGIN
+                            </a>
+                        </li>
+
+                        
+                        <!-- search box -->
+                        <li class="nav-item ps-3">
+                            <form style="width:100%;"  class="d-flex mt-2" method="GET" action="{% url 'product:search_result' %}" enctype="multipart/form-data">
+                                {% csrf_token %}
+                
+                                <input style="font-size:18px; border:2px solid rgb(57, 129, 211);" class="form-control me-2" name="lookup_word" type="search" placeholder="Search for items here" aria-label="Search">
+                
+                                <button class="btn btn-primary" type="submit"><i style="font-size:18px; color:#FFFFFF;" class="bi bi-search me-2"></i></button>
+                            </form>
+                        </li>
+
+                    </ul> 
+            </div>
+        </div>
+    </nav>
+
+{% endif %}
+
+
+
+{% if messages %}
+    <div class="messageFixed">{% include 'product/messages.html' %}</div>
+{% endif %}
+
+
+
+<!-- beginning of block content -->
+<div class="container"> style="font-family: 'Gudea', sans-serif; font-size: 18px;">
+    <br><br><br>
+
+    {% block content %}
+
+    {% endblock %}   
+</div>
+<!-- ending of block content -->
+
+
+
+<!-- beginning of footer -->
+<div class="container-fluid-expand p-3" style="font-family: 'Gudea', sans-serif; font-size: 18px; color:#FFFFFF; background-color:rgb(192, 192, 192);">
+    <div class="row">
+
+        <div class="col-md-4">
+            <a style="color:#000000; text-align:left; font-weight:bold;" href="#">
+                EMAIL SUPPORT:
+                help@histore.com
+            </a>
+        </div>
+
+        <div class="col-md-4">
+            <a style="color:#000000; text-align:left; font-weight:bold;" href="#">
+                PHONE SUPPORT:
+                080X XXX XXXX
+            </a>
+        </div>
+
+        
+        <div class="col-md-4" style="color:#FFFFFF;">
+            <a style="color:#000000; text-align:left; font-weight:bold;" href="#">
+                DO YOU HAVE SUGGESTIONS FOR US?
+            </a>
+        </div>
+
+    </div>
+</div>
+
+
+<div class="container-fluid-expand bg-dark p-3" style="font-family: 'Gudea', sans-serif; font-size: 18px; color:#FFFFFF;">
+    <div class="row pt-4">
+
+        <div class="col-md-4">
+            <a style="color:#FFFFFF; text-align:left;" href="#">About Us</a>
+            <br>
+            <a style="color:#FFFFFF;" href="{% url 'product:contact' %}">Contact Us</a>
+            <br>
+            <a style="color:#FFFFFF;" href="#">Careers</a>
+            <br>
+            <a style="color:#FFFFFF; text-align:left;" href="#">Authentic Items Policy</a>
+            <br>
+            <a style="color:#FFFFFF;" href="#">Buyer Safety Centre</a>
+            <br>
+            <a style="color:#FFFFFF;" href="#">FAQs</a>
+        </div>
+
+        <div class="col-md-4">
+            <a style="color:#FFFFFF; text-align:left;" href="#">Terms and Conditions</a>
+            <br>
+            <a style="color:#FFFFFF;" href="#">Sell on HiStore</a>
+            <br>
+            <a style="color:#FFFFFF;" href="#">Become a Sales Consultant</a>
+            <br>
+            <a style="color:#FFFFFF; text-align:left;" href="#">Become a Vendor Service Provider</a>
+            <br>
+            <a style="color:#FFFFFF;" href="#">Become a Logistics Service Partner</a>
+            <br>
+            <a style="color:#FFFFFF;" href="#">Report a Product</a>
+        </div>
+
+        
+        <div class="col-md-4 py-3" style="border:1px solid #FFFFFF; background-color:rgb(192, 192, 192); color:#000000; font-weight:bold;">
+            Designed & Developed By: GBENGA OGUNKUADE<br>
+            Tel: 08067647853<br>
+            Email: electro4real@yahoo.com
+        </div>
+
+    </div>
+</div>
+<!-- ending of footer -->
+
+
+
+<!-- Optional JavaScript; choose one of the two! -->
+
+<!-- Option 1: Bootstrap Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
+
+
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+
+<!-- Option 2: Separate Popper and Bootstrap JS -->
+<!--
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js" integrity="sha384-eMNCOe7tC1doHpGoWe/6oMVemdAVTMs2xqW4mwXrXsW0L84Iytr2wi5v2QjrP/xp" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.min.js" integrity="sha384-cn7l7gDp0eyniUwwAZgrzD06kc/tftFf19TOAs2zVinnD/C7E91j9yyk5//jjpt/" crossorigin="anonymous"></script>
+-->
+   
+
+
+<script>
+
+    // -----------------------------------------------------------------------------------------------
+    // DETAILVIEW FORM
+    // -----------------------------------------------------------------------------------------------
+
+    // INCREASING THE VALUE
+    function increaseValue() {
+    var value = parseInt(document.getElementById('number').value, 10);
+    value = isNaN(value) ? 0 : value;
+    value++;
+    document.getElementById('number').value = value;
+    }
+
+
+    // DECREASING THE VALUE
+    function decreaseValue() {
+    var value = parseInt(document.getElementById('number').value, 10);
+    value = isNaN(value) ? 0 : value;
+    value--;
+    value < 1 ? value = 1 : '1';
+    // value--; DO NOTHING IF value is lesser than 1
+    document.getElementById('number').value = value;
+    }
+
+
+
+    // -----------------------------------------------------------------------------------------------
+    // MESSAGES DISAPPEAR CONTAINER
+    // -----------------------------------------------------------------------------------------------
+    // suppose the `id` attribute of element is `message_disappear_container`.
+    // var message_ele = document.getElementById("message_disappear_container");
+
+    // setTimeout(function(){ 
+    // message_ele.style.display = "none"; 
+    // }, 2000);
+    // Timeout is 3 sec, you can change it
+
+
+
+
+
+
+    // -----------------------------------------------------------------------------------------------
+    // MESSAGES DISAPPEAR CONTAINER
+    // -----------------------------------------------------------------------------------------------
+    // suppose the `id` attribute of element is `message_disappear_container`.
+    var message_element = document.getElementById("message_disappear_container");
+
+    setTimeout(function(){ 
+        message_element.style.display = "none"; 
+    }, 1000);
+    // Timeout is 1 sec, you can change it
+
+
+
+
+
+
+
+    // -----------------------------------------------------------------------------------------------
+    // FULL SCREEN OVERLAY NAVIGATION SCRIPT
+    // -----------------------------------------------------------------------------------------------
+
+    function openNav() {
+    document.getElementById("myNav").style.height = "100%";
+    }
+
+    function closeNav() {
+    document.getElementById("myNav").style.height = "0%";
+    }
+
+
+    
+    /*------------------------ MODAL BOX SCRIPT ----------------------------------*/
+
+    // Get the modal
+    var modal = document.getElementById("myModal");
+
+    // Get the button that opens the modal
+    var btn = document.getElementById("myBtn");
+
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+
+    // When the user clicks the button, open the modal 
+    btn.onclick = function() {
+    modal.style.display = "block";
+    }
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+    modal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+    }
+
+
+
+
+
+
+    // // PASSWORD SHOW OR HIDE FOR "id_old_password" ON PASSWORD CHANGE PAGE
+
+    // function password_show_hide() {
+    // var x = document.getElementById("id_old_password");
+    // var show_eye = document.getElementById("show_eye");
+    // var hide_eye = document.getElementById("hide_eye");
+    // hide_eye.classList.remove("d-none");
+    // if (x.type === "password") {
+    //     x.type = "text";
+    //     show_eye.style.display = "none";
+    //     hide_eye.style.display = "block";
+    // } else {
+    //     x.type = "password";
+    //     show_eye.style.display = "block";
+    //     hide_eye.style.display = "none";
+    // }
+    // }
+
+
+
+    // // PASSWORD SHOW OR HIDE FOR "id_new_password1" ON PASSWORD CHANGE PAGE
+
+    // function password_show_hide1() {
+    // var x = document.getElementById("id_new_password1");
+    // var show_eye = document.getElementById("show_eye1");
+    // var hide_eye = document.getElementById("hide_eye1");
+    // hide_eye.classList.remove("d-none");
+    // if (x.type === "password") {
+    //     x.type = "text";
+    //     show_eye.style.display = "none";
+    //     hide_eye.style.display = "block";
+    // } else {
+    //     x.type = "password";
+    //     show_eye.style.display = "block";
+    //     hide_eye.style.display = "none";
+    // }
+    // }
+
+
+
+    // // PASSWORD SHOW OR HIDE FOR "id_new_password2" ON PASSWORD CHANGE PAGE
+
+    // function password_show_hide2() {
+    // var x = document.getElementById("id_new_password2");
+    // var show_eye = document.getElementById("show_eye2");
+    // var hide_eye = document.getElementById("hide_eye2");
+    // hide_eye.classList.remove("d-none");
+    // if (x.type === "password") {
+    //     x.type = "text";
+    //     show_eye.style.display = "none";
+    //     hide_eye.style.display = "block";
+    // } else {
+    //     x.type = "password";
+    //     show_eye.style.display = "block";
+    //     hide_eye.style.display = "none";
+    // }
+    // }
+
+
+
+
+    // // PASSWORD SHOW OR HIDE FOR "id_password" ON LOGIN PAGE
+
+    // function password_show_hide3() {
+    // var x = document.getElementById("id_password");
+    // var show_eye = document.getElementById("show_eye3");
+    // var hide_eye = document.getElementById("hide_eye3");
+    // hide_eye.classList.remove("d-none");
+    // if (x.type === "password") {
+    //     x.type = "text";
+    //     show_eye.style.display = "none";
+    //     hide_eye.style.display = "block";
+    // } else {
+    //     x.type = "password";
+    //     show_eye.style.display = "block";
+    //     hide_eye.style.display = "none";
+    // }
+    // }
+
+
+
+
+    // // PASSWORD SHOW OR HIDE FOR "id_verify_password" ON REGISTER PAGE
+
+    // function password_show_hide4() {
+    // var x = document.getElementById("id_verify_password");
+    // var show_eye = document.getElementById("show_eye4");
+    // var hide_eye = document.getElementById("hide_eye4");
+    // hide_eye.classList.remove("d-none");
+    // if (x.type === "password") {
+    //     x.type = "text";
+    //     show_eye.style.display = "none";
+    //     hide_eye.style.display = "block";
+    // } else {
+    //     x.type = "password";
+    //     show_eye.style.display = "block";
+    //     hide_eye.style.display = "none";
+    // }
+    // }
+
+
+
+</script>
+
+</body>
+</html>
+
+

@@ -1,0 +1,61 @@
+
+{% extends 'product/base.html' %}
+
+{% load static %}
+
+<!-- for loading "django.contrib.humanize" responsible for adding human touch to templates -->
+{% load humanize %}
+
+{% block content %}
+
+
+
+<!-- ITEMS DISPLAY LOGIC -->
+<div class="row my-5 px-2">
+
+    <div class="col-md-12 mb-1" style="background-color: white; font-size:20px;">
+        <h2 class="fw-bold mt-2 bg-primary px-2" style="color:#FFFFFF;">ADDRESS DETAILS</h2>
+    </div>
+   
+
+    <div class="col-md-12 py-3 mb-3" style="background-color: white; font-size:20px;">  
+        <!-- show the delivery address of the user if it exist and if it does not exist, show the temporary address -->
+            <div style="width:100%;">
+                Dear <b>{{ address.user.first_name|upper }} {{ address.user.last_name|upper }}</b>,
+                <br>Kindly note that your item(s) will be delivered to the address below:
+                <hr>
+                {{ address.address1 }}, {{ address.address2 }}, {{ address.country }}.
+                <br>Zip Code: {{ address.zip }} <br> Telephone: {{ address.telephone }}
+            </div>
+    </div>
+
+
+
+    <div class="col-md-12 mb-3 py-3" style="background-color: white; font-size:20px;">
+        <h4 style="font-weight: bold;">CASH ON DELIVERY</h4>
+        <div style="width:100%;">
+            Kindly note that your item(s) will be delivered to this address:<p>
+            <ul>
+                <li style="list-style-type:disc; margin-left: 10px;">Large items (e.g. Freezers) may arrive 2 business days later than other products.</li>
+                <li style="list-style-type:disc; margin-left: 10px;">Living in Lagos, Abuja or Ibadan, HISTORE Members enjoy Free Delivery on All Local orders (excluding bulky items).</li>
+                <li style="list-style-type:disc; margin-left: 10px;">Receive free delivery on your Express orders above N12,000 in Lagos</li>
+                <li style="list-style-type:disc; margin-left: 10px;">Ensure your address is current as Delivery Agents would only deliver to the stated address.</li>
+                <li style="list-style-type:disc; margin-left: 10px;">Package may arrive before the delivery date. Payment must be made before collection as Delivery agents are not allowed to open a package</li>
+                <li style="list-style-type:disc; margin-left: 10px;">On delivery day, delivery time may vary due to possible eventualities.</li>
+            </ul>
+        </div>
+
+        <div class="col-md-12 me-4">
+            <a class="btn btn-primary" href="{% url 'product:success' %}">Complete this order</a>
+        </div> 
+    </div>
+
+</div>
+
+
+    
+
+
+{% endblock %}
+
+

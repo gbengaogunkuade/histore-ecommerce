@@ -1,0 +1,73 @@
+
+  {% extends 'product/base.html' %}
+
+  {% load static %}
+
+  <!-- for loading "django.contrib.humanize" responsible for adding human touch to templates -->
+  {% load humanize %}
+
+  {% block content %}
+
+
+
+
+  <div class="row">
+        <div class="col-md-12 mt-4 mb-1 py-2">
+
+          <!-- messages alert -->
+          {% if messages %}
+              <div style="width:90%; margin-left:auto; margin-right:auto;">
+                  {% include 'product/messages.html' %}
+              </div>
+          {% endif %}
+
+          <!-- search form -->
+          <form style="width:90%; margin-left:auto; margin-right:auto;" class="d-flex" method="POST" enctype="multipart/form-data">
+              {% csrf_token %}
+
+              <input style="font-size:18px; border:2px solid rgb(57, 129, 211);" class="form-control me-2" name="lookup_word" type="search" placeholder="Search for products and brands" aria-label="Search">
+
+              <button class="btn btn-primary" type="submit"><i style="font-size:18px; color:#FFFFFF;" class="bi bi-search me-2"></i></button>
+          </form>
+
+      </div>
+  </div>
+
+
+
+
+
+<!-- ITEMS DISPLAY LOGIC -->
+<div class="row mt-2">
+
+  {% for object in objects %}
+    <div class="col-md-2 my-2 p-3" style="background-color: rgb(255, 255, 255); text-align:center; border:1px solid  rgb(236, 232, 232);">
+      <b>{{ object.category }}</b>
+      <br><br>
+      <img src="{{ object.photo}}" class="card-img-top" alt="...">
+
+      <a href="{% url 'product:detail' object.slug %}">
+        <h5 class="card-title"><b>{{ object.title }}</b></h5>
+      </a>
+
+      {% if object.discount %}
+          <span class="card-title me-2" style="color:rgb(168, 167, 167);"><del>₦{{ object.price|intcomma }}</del></span>
+          <span class="card-title">₦{{ object.discount|intcomma }}</span>
+        {% else %}
+          <span class="card-title">₦{{ object.price|intcomma }}</span>
+      {% endif %}
+
+      <br>
+
+      {% if object.get_amount_saved %}
+        <span class="card-title badge bg-danger">saving ₦{{ object.get_amount_saved|intcomma }}</span> 
+      {% endif %} 
+
+
+    </div>
+  {% endfor %}
+ 
+</div>
+
+
+{% endblock %}

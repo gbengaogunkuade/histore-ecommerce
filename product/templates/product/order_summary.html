@@ -1,0 +1,167 @@
+
+  {% extends 'product/base.html' %}
+
+  {% load static %}
+
+  <!-- for loading "django.contrib.humanize" responsible for adding human touch to templates -->
+  {% load humanize %}
+
+  <!-- for loading cart items count -->
+  {% load cart_template_tags %}
+
+
+
+  {% block content %}
+
+
+  <!-- ITEMS DISPLAY LOGIC -->
+
+    <div class="row mb-2 mt-5">
+
+          <div class="col-md-12 mt-2">
+            {% if user.is_authenticated %}
+              <h1 class="">You have <b>{{ request|user_current_cart_count }} item{{ request|user_current_cart_count|pluralize }}</b> in your cart</h1> 
+            {% else %}
+              <h1 class="">You have <b>{{ request|session_current_cart_count }} item{{ request|session_current_cart_count|pluralize }}</b> in your cart</h1> 
+            {% endif %}
+        </div>
+
+    </div>
+
+
+
+      
+    {% for object in objects %}
+    
+        <div class="row my-4" style="height:100%; font-size:20px; border:1px solid #c8c6c6;">
+
+          <div class="col-md-3 py-3" style="text-align:center;">
+              <a href="{% url 'product:detail' object.product.slug %}">
+                <img style="width:70%;" src="{{ object.product.photo }}">
+              </a>
+          </div>
+
+          <div class="col-md-9 py-3" style="background-color:#fcf4f4c2;">
+              <a style="font-size:22px; color:#000000;" href="{% url 'product:detail' object.product.slug %}">
+              {{ object.product.title }}</a>
+                  <div class="my-2">
+                    {% if user.is_authenticated %}
+                          <div>
+                            <!-- saving and unsaving this product -->
+                            {% if object.save_this_product %}
+                                <a class="badge" style="background-color: darkorange; padding:5px;" href="{% url 'product:unsave_this_product_from_order_summary' object.product.slug %}">
+                                  <i style="color:rgb(255, 255, 255); font-size:17px;" class="bi bi-heart-fill"></i>
+                                  <span style="color:rgb(255, 255, 255); font-size:18px;">saved</span>
+                                </a> 
+                            {% else %}
+                                <a class="badge" style="background-color: darkorange; padding:5px;" href="{% url 'product:save_this_product_from_order_summary' object.product.slug %}">
+                                  <i style="color:rgb(255, 255, 255); font-size:17px;" class="bi bi-heart"></i>
+                                <span style="color:rgb(255, 255, 255); font-size:18px;">save this product</span>
+                                </a>
+                            {% endif %}
+                            </div>
+                    {% endif %}
+                  </div>
+
+                  <div class="">
+                    <a href="{% url 'product:remove_single_item_from_cart' object.product.slug %}">
+                      <span class="btn btn-outline-dark btn-sm me-2"><i class="bi bi-dash-lg"></i></span>
+                    </a>
+        
+                    <b>{{ object.quantity }}</b>
+        
+                    <a href="{% url 'product:add_single_item_to_cart' object.product.slug %}">
+                      <span class="btn btn-outline-dark btn-sm ms-2"><i class="bi bi-plus-lg"></i></span>
+                    </a>
+
+                    <span class="ms-3">
+                      <a href="{% url 'product:remove_items_from_cart' object.product.slug %}">
+                        <i style="color:rgb(172, 9, 9); font-size:18px;" class="bi bi-trash2-fill"></i>
+                        <span style="color:rgb(172, 9, 9); font-size:20px;">Remove</span> 
+                      </a>
+                      </span>
+
+                </div>
+
+
+                <div class="mt-2">
+                  {% if object.product.discount %}
+                    PRICE: <b>₦{{ object.product.discount|intcomma }}</b>
+                    <span class="ms-2" style="color:rgb(157, 156, 158);">
+                      <del>₦{{ object.product.price|intcomma }}</del>
+                    </span>
+                    <span class="ms-2" style="color:rgb(29, 158, 68);">saving ₦{{ object.get_amount_saved|intcomma }}</span>
+        
+                  {% else %}
+                    PRICE: <b>₦{{ object.product.price|intcomma }}</b>
+                  {% endif %}
+                </div>
+
+                <div class="mt-2">
+                  SUB-TOTAL: <b>₦{{ object.get_subtotal|intcomma }}</b>
+                </div>
+            </div>
+      </div>
+
+      {% empty %}
+
+            <div class="col-md-12 fw-bold text-center my-5">
+                <span class="fs-2">YOUR CART IS EMPTY, CONTINUE SHOPPING!!!</span>
+                <br>
+                <a class="btn btn-primary my-5 fs-5" href="{% url 'product:home' %}">Continue Shopping</a>
+            </div>
+
+    {% endfor %}
+  
+
+
+    {% if cart.get_total %}
+    <div class="row my-4" style="height:100%; font-size:20px; border:1px solid #c8c6c6;">
+
+        <div class="col-md-3 py-1 bg-info" style="text-align:center;">
+          <a style="font-size:18px; width:100%;" class="btn btn-info fw-bold py-2" href="{% url 'product:home' %}">Continue Shopping</a>
+        </div>
+
+        <div class="col-md-6 py-1" style="background-color: #fcf4f4c2; text-align:center;">
+          <span style="font-size:22px; margin-right:10px;">TOTAL: </span>
+          <span style="font-size:30px;"><b>₦{{ cart.get_total|intcomma }}</b></span>
+          <span style="font-size:18px; color:rgb(155, 146, 146);" class="badge ms-3 py-2">
+          <b>(Delivery fee not included)</b>
+          </span>
+        </div>
+
+        <div class="col-md-3 py-1 bg-warning" style="text-align:center;">
+            <a style="font-size:18px; width:100%;" class="btn btn-warning fw-bold py-2" href="{% url 'product:checkout' %}">Proceed To Checkout</a>
+        </div>
+
+    </div>
+    {% endif %}
+
+
+
+    {% if tempcart.get_total %}
+    <div class="row my-4" style="height:100%; font-size:20px; border:1px solid #c8c6c6;">
+
+        <div class="col-md-3 py-1 bg-info" style="text-align:center;">
+          <a style="font-size:18px; width:100%;" class="btn btn-info fw-bold py-2" href="{% url 'product:home' %}">Continue Shopping</a>
+        </div>
+
+        <div class="col-md-6 py-1" style="background-color: #fcf4f4c2; text-align:center;">
+          <span style="font-size:22px; margin-right:20px;">TOTAL: </span>
+          <span style="font-size:30px;"><b>₦{{ tempcart.get_total|intcomma }}</b></span>
+          <span style="font-size:18px; color:rgb(155, 146, 146);" class="badge ms-3 py-2">
+          <b>(Delivery fee not included yet)</b>
+        </span>
+        </div>
+
+        <div class="col-md-3 py-1 bg-warning" style="text-align:center;">
+          <a style="font-size:18px; width:100%;" class="btn btn-warning fw-bold py-2" href="{% url 'product:checkout' %}">Proceed To Checkout</a>
+        </div>
+
+    </div>
+    {% endif %}
+
+
+    <br><br>
+
+{% endblock %}

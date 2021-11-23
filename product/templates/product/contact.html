@@ -1,0 +1,116 @@
+
+{% extends 'product/base.html' %}
+
+{% load static %}
+
+<!-- for loading "django.contrib.humanize" responsible for adding human touch to templates -->
+{% load humanize %}
+
+{% block content %}
+
+
+
+<!-- ITEMS DISPLAY LOGIC -->
+
+
+<div class="row">
+
+    <div class="my-5 p-4" style="width:60%; margin-left:auto; margin-right:auto; background-color:rgb(255, 255, 255);">
+
+    
+        <h3 style="margin-bottom:20px; font-weight: bold;">Contact Form</h3>
+
+        <form class="form-group row mb-4 g-3" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+                <!-- contactform -->
+
+                <!-- <div class="col-md-12">Username: <b>{{ user.username }}</b></div> -->
+    
+                <div class="col-md-12">FirstName {{ form.first_name }}</div>
+
+                <div class="col-md-12">LastName {{ form.last_name }}</div>
+
+                <div class="col-md-12">Email {{ form.email }}</div>
+
+                <div class="col-md-12">Address {{ form.address }}</div>
+
+                <div class="col-md-12">Message {{ form.message }}</div>
+
+
+                <!-- logic question -->
+                <div class="col-md-4">
+                    <span class="badge bg-danger" style="font-weight:bold; font-size:18px;">
+                        {{ first_Number }}
+                    </span> 
+                    <span style="font-weight:bold; font-size:18px; margin-left:25px;">
+                        <i class="bi bi-plus-lg"></i>
+                    </span> 
+                    <span class="badge bg-danger" style="font-weight:bold; font-size:18px; margin-left:25px;">
+                        {{ second_Number }}
+                    </span>
+                    <span style="font-weight:bold; font-size:20px; margin-left:25px;">=</span>
+                </div>
+
+
+                <!-- user answer -->
+                <div class="col-md-4">
+                    <input class="form-control" type="number" name="user_answer" placeholder="Answer" required>
+                </div>
+
+                
+                <!-- logic answer (HIDDEN FIELD) -->
+                <div class="col-md-4">
+                    <input type="hidden" name="logic_answer" value="{{ logic_answer }}">
+                </div>
+
+
+
+                <div class="col-md-4 mt-5">
+                    <button style="width:100%;" class="btn btn-secondary" type="reset">CANCEL</button>
+                </div>
+
+                <div class="col-md-4 mt-5">
+                    <button style="width:100%;" class="btn btn-primary" type="submit">SUBMIT</button>
+                </div>
+
+                <div class="col-md-4 mt-5">
+                    &nbsp;
+                </div>
+        </form>
+
+               
+
+
+
+
+        <!-- <form class="row mb-4" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+    
+                <div class="col-md-12">
+                    {{ register_form.as_p }} 
+                </div>
+
+                <div class="col-md-12">
+                    {{ delivery_form.as_p }} 
+                </div>
+
+                <div class="col-md-6">
+                    <button style="width:100%;" class="btn btn-primary mt-3" type="submit">REGISTER</button>
+                </div>
+
+        </form> -->
+
+    
+    </div>
+
+
+</div>
+
+
+
+
+
+
+{% endblock %}
+

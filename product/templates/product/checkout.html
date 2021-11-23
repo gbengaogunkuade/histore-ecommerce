@@ -1,0 +1,135 @@
+
+{% extends 'product/base.html' %}
+
+{% load static %}
+
+<!-- for loading "django.contrib.humanize" responsible for adding human touch to templates -->
+{% load humanize %}
+
+{% block content %}
+
+
+
+
+<!-- FORM STYLING -->
+<style>
+
+    #my_form_id ul li {
+                    list-style-type: none;
+                    }
+
+
+    .my_form ul li {
+                    list-style-type: none;
+                    margin-left:-30px;
+                    }
+
+</style>
+
+
+
+
+
+<!-- ITEMS DISPLAY LOGIC -->
+<div class="row my-5">
+
+
+        <!-- the form part -->
+        <div class="col-md-6 me-4 p-3" style='border:1px solid rgb(211, 211, 211);'>
+
+            <h3 style="margin-bottom:20px; font-weight: bold;">Checkout Form</h3>
+
+            <form method="POST" enctype="multipart/form-data" class="my_form" style="font-size:18px;">
+                {% csrf_token %}
+
+                <div style="width:100%; margin-bottom:15px;">Address1 {{ form.address1 }}</div>
+
+                <div style="width:100%; margin-bottom:15px;">Address2 {{ form.address2 }}</div>
+
+                <div style="width:100%; margin-bottom:20px;">Country {{ form.country }}</div>
+
+                <div style="width:100%; margin-bottom:15px;">zip {{ form.zip }}</div>
+
+                <div style="width:100%; margin-bottom:15px;">Telephone {{ form.telephone }}</div>
+
+                <div style="width:100%; margin-bottom:15px;">
+                    Save this information for next time {{ form.save_information }}
+                </div>
+
+                <div style="width:100%; margin-bottom:15px;">Choose your payment option below: 
+                    {{ form.payment_option }}
+                </div>
+                
+                <button class="btn btn-primary" type="submit">CONTINUE TO CHECKOUT</button>
+
+            </form>
+
+
+        </div>
+
+
+
+
+    <!-- the CART part -->
+    <div class="col-md-5 p-3" style='border:4px solid rgb(255, 255, 255);'>
+
+            <h3 style="margin-bottom:20px; font-weight: bold;">Summary Of The Order</h3>
+        
+            <div class="p-1">
+
+                <div class="row py-2 px-3" style="background-color:rgb(255, 255, 255);">
+                    {% for object in objects %}
+                        <div class="col-md-3 py-1">
+                            <img style="width:100%; margin-right:20px;" src="{{ object.product.photo }}"> 
+                        </div>
+
+        
+                        <div class="col-md-9 py-3 ps-4">
+                            {{ object.product.title }}
+                            <br>
+                            {% if object.product.discount %}
+                                ₦{{ object.product.discount }}
+                                <span class="ms-2" style="color:rgb(157, 156, 158);">
+                                <del>₦{{ object.product.price|intcomma }}</del>
+                                </span>                                                
+                            {% else %}
+                                ₦{{ object.product.price|intcomma }}
+                            {% endif %}
+                            <span class="ms-2">|</span> <span class="ms-2">QUANTITY: {{ object.quantity }}</span>
+                                <br>
+                                Subtotal: <b>₦{{ object.get_subtotal|intcomma }}</b>
+                        </div>
+        
+                        <div class="py-1" style="background-color:rgb(236, 232, 232);"></div>                           
+                    {% endfor %}
+                </div>
+        
+        
+                {% if cart.get_total %} 
+                <div class="row py-2" style="background-color:rgb(255, 255, 255); text-align:center;">
+                    <div class="col-md-12 mt-1">
+                        <span style="font-size:20px; margin-right:20px;">Total: </span>
+                            <span style="font-size:30px;"><b>₦{{ cart.get_total|intcomma }}</b></span>
+                            <span style="font-size:18px; color:rgb(155, 146, 146);" class="badge ms-3 py-2">
+                            <b>(Delivery fee not included yet)</b>
+                        </span>
+                    </div>
+                </div>
+            
+                {% else %}
+                    &nbsp;
+                {% endif %}
+        
+
+
+            </div>
+
+    </div>
+
+</div>
+
+
+<div class="my-5"></div>
+
+
+{% endblock %}

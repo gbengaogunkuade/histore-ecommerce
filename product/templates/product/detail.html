@@ -1,0 +1,195 @@
+  {% extends 'product/base.html' %}
+
+  {% load static %}
+
+  <!-- for loading "django.contrib.humanize" responsible for adding human touch to templates -->
+  {% load humanize %}
+
+  {% block content %}
+
+
+
+
+
+<!-- ITEMS DISPLAY LOGIC -->
+
+
+<div class="row mt-5">
+
+      <div class="col-md-4">
+        <img src="{{ object.photo}}" class="container p-3 specialcard" alt="...">
+      </div>
+
+
+      <div class="col-md-8">
+        <div class="specialcard px-4 pt-3">
+              {% if user.is_authenticated %}
+                  <!-- saving and unsaving this product -->
+                  {% if saved_object %}
+                        <a href="{% url 'product:unsave_this_product_from_detail' object.slug %}">
+                        <span style="color:darkorange; font-size:20px;">saved</span>
+                        <i style="color:darkorange; font-size:20px;" class="bi bi-heart-fill"></i>
+                        </a> 
+                  {% else %}
+                      <a href="{% url 'product:save_this_product_from_detail' object.slug %}">
+                      <span style="color:darkorange; font-size:20px;">save this product</span>
+                      <i style="color:darkorange; font-size:20px;" class="bi bi-heart"></i>
+                      </a>
+                  {% endif %}
+              {% endif %}
+
+
+
+            <div class="fs-4 mb-1 mt-2"><b>{{ object.title }}</b></div>
+            
+    
+            <!-- updating and deleting -->
+            {% if object_owner == visitor %}
+                  <a href="{% url 'product:update_product' object.slug %}"><i style="color:rgb(18, 84, 228); font-size:17px; margin-right:5px;" class="bi bi-pencil-square"></i>
+                    <span style="color:rgb(18, 84, 228); font-size:17px;">UPDATE</span></a>
+
+                  <a href="{% url 'product:delete_product' object.slug %}">
+                    <i style="color:rgb(172, 9, 9); font-size:17px; margin-right:5px;" class="bi bi-trash2-fill ms-4"></i>
+                    <span style="color:rgb(172, 9, 9); font-size:17px;">DELETE</span> 
+                  </a>
+                  
+            {% endif %}
+    
+            <hr> 
+            <p class="fs-5">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+            <p>₦{{ object.price|intcomma }} <span class="badge bg-success ms-3 py-2 px-4">In Stock</span></p>
+
+            <hr>
+
+            <form class="text-muted mt-3" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <div class="row">
+                    <div class="col-md-8 mb-3">
+                        <label style="font-size:20px; margin-right:15px;" for="quantity">Quantity</label>
+                    
+                        <span class="btn btn-outline-secondary btn-sm" id="decrease" onclick="decreaseValue()" value="Decrease Value"><i class="bi bi-dash-lg"></i></span>
+
+                        <input class="btn btn btn-lg" type="number" id="number" value={{ object.quantity }} name="form_quantity" />
+
+                        <span class="btn btn-outline-secondary btn-sm" id="increase" onclick="increaseValue()" value="Increase Value"><i class="bi bi-plus-lg"></i></span>
+
+                        <button class="btn btn-primary btn-sm ms-4" style="font-weight:bold; font-size:16px;" type="submit">ADD TO CART</button>
+
+                    </div>
+                </div>
+
+            </form>
+   
+      </div>
+
+    </div>
+
+</div>
+
+
+<br>
+
+<!-- OTHER PRODUCTS -->
+<div class="row mt-4" style="background-color: rgba(250, 249, 249, 0.774);">
+  <h3 style="text-shadow: 0px 1px #000; background-color: rgb(197, 196, 196)" class="py-1">OTHER PRODUCTS IN <span style="text-transform:uppercase; color:rgb(194, 23, 23);">{{ object.category }}</span></h3>
+
+  {% for object in related_objects %}
+    <div class="col-md-3 p-2 mb-4" style="text-align:center;">
+        <div class="specialcard pt-3">
+          {% if object.category == 'Computer and Electronics' %}
+            <a style="width:90%;" class="btn btn-danger py-1" href="{% url 'product:computer_electronics' %}"><b>{{ object.category }}</b></a>
+            {% elif object.category == 'Phones and Tablets' %}
+            <a style="width:90%;" class="btn btn-info py-1" href="{% url 'product:phones_tablets' %}"><b>{{ object.category }}</b></a>
+            {% elif object.category == 'Fashions and Styles' %}
+            <a style="width:90%;" class="btn btn-warning py-1" href="{% url 'product:fashions_styles' %}"><b>{{ object.category }}</b></a>
+            {% elif object.category == 'Home and Kitchen' %}
+            <a style="width:90%;" class="btn btn-primary py-1" href="{% url 'product:home_kitchen' %}"><b>{{ object.category }}</b></a>
+            {% elif object.category == 'Drinks and Wine' %}
+            <a style="width:90%;" class="btn btn-secondary py-1" href="{% url 'product:drinks_wine' %}"><b>{{ object.category }}</b></a>
+            {% elif object.category == 'Kids and Toys' %}
+            <a style="width:90%;" class="btn btn-success py-1" href="{% url 'product:kids_toys' %}"><b>{{ object.category }}</b></a>
+            {% elif object.category == 'Others' %}
+            <a style="width:90%;" class="btn btn-dark py-1" href="{% url 'product:others' %}"><b>{{ object.category }}</b></a>
+            {% endif %}
+            <a href="{% url 'product:detail' object.slug %}">
+            <img class="mt-4" src="{{ object.photo}}" alt="..." style="width:80%; margin:0 auto 0 auto;">
+            <h5 class="p-2">{{ object.title }}</h5>
+            </a>
+  
+            <div style="height:100px;">
+              {% if object.discount %}
+                <span style="color:rgb(168, 167, 167);"><del>₦{{ object.price|intcomma }}</del></span>
+                <h5><b>₦{{ object.discount|intcomma }}</b></h5>
+              {% else %}
+                <h5><b>₦{{ object.price|intcomma }}</b></h5>
+              {% endif %}
+    
+              {% if object.get_amount_saved %}
+                <span class="badge bg-success px-2"><b><small>saving ₦{{ object.get_amount_saved|intcomma }}</small></b></span> 
+              {% endif %}
+              
+            </div>
+  
+        </div>
+    </div>
+  {% endfor %}
+  </div>
+
+
+
+  <br>
+
+
+  <!-- VIEWED PRODUCTS -->
+
+<!-- <h4 class="mt-5">Viewed Products</h4> -->
+<div class="row mt-4" style="background-color: rgba(250, 249, 249, 0.774);">
+  <h3 style="text-shadow: 0px 1px #000; background-color: rgb(197, 196, 196);" class="py-1">RECENTLY <span style="text-transform:uppercase; color:rgb(194, 23, 23);">VIEWED BY YOU</span></h3>
+
+  {% for object in all_viewed_objects %}
+    <div class="col-md-3 p-2 mb-4" style="text-align:center;">
+        <div class="specialcard pt-3">
+          {% if object.category == 'Computer and Electronics' %}
+            <a style="width:90%;" class="btn btn-danger py-1" href="{% url 'product:computer_electronics' %}"><b>{{ object.category }}</b></a>
+            {% elif object.category == 'Phones and Tablets' %}
+            <a style="width:90%;" class="btn btn-info py-1" href="{% url 'product:phones_tablets' %}"><b>{{ object.category }}</b></a>
+            {% elif object.category == 'Fashions and Styles' %}
+            <a style="width:90%;" class="btn btn-warning py-1" href="{% url 'product:fashions_styles' %}"><b>{{ object.category }}</b></a>
+            {% elif object.category == 'Home and Kitchen' %}
+            <a style="width:90%;" class="btn btn-primary py-1" href="{% url 'product:home_kitchen' %}"><b>{{ object.category }}</b></a>
+            {% elif object.category == 'Drinks and Wine' %}
+            <a style="width:90%;" class="btn btn-secondary py-1" href="{% url 'product:drinks_wine' %}"><b>{{ object.category }}</b></a>
+            {% elif object.category == 'Kids and Toys' %}
+            <a style="width:90%;" class="btn btn-success py-1" href="{% url 'product:kids_toys' %}"><b>{{ object.category }}</b></a>
+            {% elif object.category == 'Others' %}
+            <a style="width:90%;" class="btn btn-dark py-1" href="{% url 'product:others' %}"><b>{{ object.category }}</b></a>
+            {% endif %}
+            <a href="{% url 'product:detail' object.slug %}">
+            <img class="mt-4" src="{{ object.photo}}" alt="..." style="width:80%; margin:0 auto 0 auto;">
+            <h5 class="p-2">{{ object.title }}</h5>
+            </a>
+  
+            <div style="height:100px;">
+              {% if object.discount %}
+                <span style="color:rgb(168, 167, 167);"><del>₦{{ object.price|intcomma }}</del></span>
+                <h5><b>₦{{ object.discount|intcomma }}</b></h5>
+              {% else %}
+                <h5><b>₦{{ object.price|intcomma }}</b></h5>
+              {% endif %}
+    
+              {% if object.get_amount_saved %}
+                <span class="badge bg-success px-2"><b><small>saving ₦{{ object.get_amount_saved|intcomma }}</small></b></span> 
+              {% endif %}
+              
+            </div>
+  
+        </div>
+    </div>
+  {% endfor %}
+  </div>
+
+  <br>
+
+
+{% endblock %}

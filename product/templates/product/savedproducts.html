@@ -1,0 +1,77 @@
+
+
+  {% extends 'product/base.html' %}
+
+  {% load static %}
+
+  <!-- for loading "django.contrib.humanize" responsible for adding human touch to templates -->
+  {% load humanize %}
+
+  {% block content %}
+
+
+<br>
+
+  <!-- ITEMS DISPLAY LOGIC -->
+<div class="row mt-3">
+  {% if user_saved_objects %}
+  <h3>Your Saved Items</h3> 
+  {% endif %}
+  
+
+  {% for object in user_saved_objects %}
+    <div class="col-md-3 p-2" style="text-align:center;">
+        <div class="specialcard py-2">
+              
+            <a href="{% url 'product:detail' object.slug %}">
+            <img class="mt-4" src="{{ object.photo}}" alt="..." style="width:80%; margin:0 auto 0 auto;">
+            <h5 class="p-2">{{ object.title }}</h5>
+            </a>
+  
+            <div style="height:100px;">
+              {% if object.discount %}
+                <span style="color:rgb(168, 167, 167);"><del>₦{{ object.price|intcomma }}</del></span>
+                <h5><b>₦{{ object.discount|intcomma }}</b></h5>
+              {% else %}
+                <h5><b>₦{{ object.price|intcomma }}</b></h5>
+              {% endif %}
+    
+              {% if object.get_amount_saved %}
+                <span class="badge bg-success px-2"><b><small>saving ₦{{ object.get_amount_saved|intcomma }}</small></b></span> 
+              {% endif %}
+
+              <!-- unsaving this product -->
+              <div>
+                <a href="{% url 'product:unsave_this_product_from_savedproducts' object.slug %}">
+                <span style="color:darkorange; font-size:20px;">saved</span>
+                <i style="color:darkorange; font-size:20px;" class="bi bi-heart-fill"></i>
+                </a>
+                </div>
+
+            </div>
+  
+        </div>
+    </div>
+
+  {% empty %}
+
+            <div class="col-md-12 fw-bold text-center my-5">
+            <span class="fs-2">YOUR SAVED ITEMS HISTORY IS EMPTY, CONTINUE SHOPPING!!!</span>
+            <br>
+            <a class="btn btn-primary my-5 fs-5" href="{% url 'product:home' %}">Continue Shopping</a>
+          </div>
+
+  {% endfor %}
+  </div>
+
+
+
+{% if user_saved_objects %}
+    <br><br><br><br><br>
+{% else %}
+    <br><br><br><br><br><br>
+{% endif %}
+
+
+
+{% endblock %}

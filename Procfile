@@ -1,0 +1,1 @@
+web: gunicorn HiStore.wsgi --log-file -
