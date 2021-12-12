@@ -245,9 +245,9 @@ EMAIL_HOST_PASSWORD = env("EMAIL_PASSWORD")
 # --------------------------------------------------------------------------------------------------------
 # stripe
 
-STRIPE_SECRET_KEY = "sk_test_51Jh8Q9FgAVSZulFWWA0FFX3dFjwunxNtkKYlUHZzpmK1Ud4g1tTgBwql0bgpgJ5P8ebRFT8XLJUB1ItWQwMjOQRr00TSpSO4aB"
+STRIPE_SECRET_KEY = env("STRIPE_KEY")
 
-STRIPE_PUBLISHABLE_KEY = "pk_test_51Jh8Q9FgAVSZulFWPLZZlN8O697FZxb8nB7tCv8OE5thb9mJEpsNzfgVaGBI4Z2x8jvFFm7cabwSWP4NuKhtNTKF00SD8kHHlf"
+STRIPE_PUBLISHABLE_KEY = env("STRIPE_PUBLISHABLE_KEY")
 
 # --------------------------------------------------------------------------------------------------------
 
